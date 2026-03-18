@@ -1,0 +1,495 @@
+/* ═══════════════════════════════════════════════════════════
+   BELLA BEAUTY — NAVBAR
+   Matches the exact design language of bella-beauty-v4.html
+   Tokens: --r, --gold, --ink, --muted, --pale, --cream, etc.
+═══════════════════════════════════════════════════════════ */
+
+/* ── HEADER SHELL ── */
+#hdr {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  background: rgba(253, 248, 246, 0.95);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--bd);
+  z-index: 1000;
+  transition: box-shadow 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Scroll shadow — added via JS when window.scrollY > 8 */
+#hdr.up {
+  box-shadow: 0 4px 24px rgba(192, 57, 90, 0.09);
+}
+
+/* ── NAV ROW ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  gap: 0.75rem;
+}
+
+/* ── LOGO ── */
+.logo {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--r);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: opacity 0.28s ease;
+}
+.logo:hover { opacity: 0.82; }
+
+.logo-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--gold);
+  border-radius: 50%;
+  margin-bottom: 1px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ── DESKTOP NAV LINKS ── */
+.nav-links {
+  display: flex;
+  gap: 0.15rem;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink);
+  padding: 0.38rem 0.72rem;
+  border-radius: 8px;
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  white-space: nowrap;
+  display: block;
+}
+.nav-links a:hover,
+.nav-links a.cur {
+  color: var(--r);
+  background: var(--r-xl);
+}
+
+/* ── RIGHT SIDE CLUSTER ── */
+.nav-end {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+/* ── ICON BUTTON (cart etc.) ── */
+.ico-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink);
+  position: relative;
+  flex-shrink: 0;
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ico-btn:hover {
+  background: var(--r-l);
+  color: var(--r);
+}
+.ico-btn svg {
+  width: 19px;
+  height: 19px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+}
+
+/* Cart badge */
+.cart-dot {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 17px;
+  height: 17px;
+  background: var(--r);
+  color: #fff;
+  font-size: 0.58rem;
+  font-weight: 700;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid var(--cream);
+  pointer-events: none;
+  animation: cartPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes cartPop {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+/* ── AUTH BUTTONS (logged out state) ── */
+.nav-auth-btns {
+  display: flex;
+  align-items: center;
+  gap: 0.38rem;
+}
+
+.nav-login {
+  font-family: var(--sans);
+  font-size: 0.83rem;
+  font-weight: 500;
+  color: var(--r);
+  padding: 0.42rem 0.9rem;
+  border-radius: 100px;
+  border: 1.5px solid var(--r-l);
+  background: var(--r-xl);
+  cursor: pointer;
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  line-height: 1;
+}
+.nav-login:hover {
+  border-color: var(--r);
+  background: var(--r-l);
+}
+
+.nav-signup {
+  font-family: var(--sans);
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: #fff;
+  padding: 0.42rem 0.9rem;
+  border-radius: 100px;
+  background: var(--r);
+  border: none;
+  cursor: pointer;
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  line-height: 1;
+  box-shadow: 0 3px 12px rgba(192, 57, 90, 0.28);
+}
+.nav-signup:hover {
+  background: var(--r-d);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(192, 57, 90, 0.38);
+}
+
+/* ── PROFILE BUTTON WRAPPER ── */
+.profile-wrap {
+  position: relative;
+}
+
+/* Profile trigger button */
+.profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.28rem 0.55rem 0.28rem 0.28rem;
+  border-radius: 100px;
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: var(--sans);
+}
+.profile-btn:hover {
+  background: var(--r-xl);
+}
+
+/* Customer profile button */
+.profile-btn.customer:hover { background: var(--r-xl); }
+
+/* Admin profile button */
+.profile-btn.admin:hover { background: rgba(191, 140, 90, 0.1); }
+
+/* Profile name label */
+.profile-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink);
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-name { color: var(--gold); }
+
+/* Chevron icon inside profile button */
+.chevron-ico {
+  width: 13px;
+  height: 13px;
+  stroke: var(--pale);
+  fill: none;
+  stroke-width: 2.2;
+  flex-shrink: 0;
+  transition: transform 0.28s ease;
+}
+.profile-btn[aria-expanded="true"] .chevron-ico {
+  transform: rotate(180deg);
+}
+
+/* ── AVATAR CIRCLES ── */
+.profile-av {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  line-height: 1;
+  position: relative;
+}
+
+/* Customer avatar — rose gradient */
+.customer-av {
+  background: linear-gradient(135deg, var(--r), #D4607A);
+  font-family: var(--serif);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Admin avatar — gold gradient */
+.admin-av {
+  background: linear-gradient(135deg, var(--gold), #8B6340);
+}
+.admin-av svg {
+  width: 15px;
+  height: 15px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* Admin online badge dot */
+.admin-av-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  background: #16A34A;
+  border-radius: 50%;
+  border: 2px solid var(--cream);
+  animation: onlinePulse 2.5s ease infinite;
+}
+@keyframes onlinePulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+
+/* ── PROFILE DROPDOWN ── */
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 210px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid rgba(192, 57, 90, 0.08);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 0.35rem;
+  z-index: 1100;
+  animation: dropdownIn 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  transform-origin: top right;
+}
+@keyframes dropdownIn {
+  from { opacity: 0; transform: scale(0.92) translateY(-6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Admin dropdown — gold border tint */
+.admin-dropdown {
+  border-color: rgba(191, 140, 90, 0.15);
+}
+
+/* Dropdown header block */
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.75rem 0.65rem;
+}
+
+.admin-header {
+  background: linear-gradient(135deg, rgba(191, 140, 90, 0.08), transparent);
+  border-radius: 12px;
+}
+
+.dh-av {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  font-family: var(--serif);
+}
+
+/* Admin dropdown header avatar — smaller */
+.admin-av-sm {
+  background: linear-gradient(135deg, var(--gold), #8B6340);
+  width: 32px;
+  height: 32px;
+}
+.admin-av-sm svg {
+  width: 15px;
+  height: 15px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2;
+}
+
+.dh-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.dh-role {
+  font-size: 0.65rem;
+  color: var(--muted);
+  margin-top: 0.1rem;
+  font-weight: 500;
+}
+.admin-role {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* Divider */
+.dropdown-divider {
+  height: 1px;
+  background: rgba(192, 57, 90, 0.07);
+  margin: 0.25rem 0.5rem;
+}
+
+/* Dropdown menu items */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: all 0.22s ease;
+}
+.dropdown-item:hover {
+  background: var(--r-xl);
+  color: var(--r);
+}
+
+.di-ico {
+  font-size: 0.85rem;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Logout item gets a subtle danger tint */
+.logout-item { color: var(--muted); }
+.logout-item:hover {
+  background: var(--r-l);
+  color: var(--r);
+}
+
+/* ── HAMBURGER (mobile) ── */
+.ham {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4.5px;
+  padding: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  transition: background 0.22s ease;
+}
+.ham:hover { background: var(--r-xl); }
+
+.ham i {
+  display: block;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+.ham i:nth-child(1) { width: 20px; }
+.ham i:nth-child(2) { width: 14px; }
+.ham i:nth-child(3) { width: 17px; }
+
+/* Animate to × when active */
+.ham.x i:nth-child(1) { width: 18px; transform: rotate(45deg) translate(4.5px, 4.5px); }
+.ham.x i:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.ham.x i:nth-child(3) { width: 18px; transform: rotate(-45deg) translate(4.5px, -4.5px); }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+
+/* Tablet — hide nav links, show hamburger */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .ham { display: flex; }
+
+  /* On mobile, hide the text name next to avatar — just show avatar */
+  .profile-name { display: none; }
+  .chevron-ico  { display: none; }
+
+  /* Tighter padding on the profile button */
+  .profile-btn { padding: 0.2rem; border-radius: 50%; }
+  .profile-btn:hover { background: var(--r-xl); }
+
+  /* Keep both login + signup on mobile but smaller */
+  .nav-login,
+  .nav-signup { font-size: 0.76rem; padding: 0.38rem 0.75rem; }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+  .nav-login  { display: none; } /* only show Sign Up on very small screens */
+  .nav-signup { font-size: 0.75rem; padding: 0.36rem 0.7rem; }
+}
+
+/* Extra small — keep navbar readable */
+@media (max-width: 320px) {
+  .logo { font-size: 1.25rem; }
+  .logo-dot { width: 5px; height: 5px; }
+}

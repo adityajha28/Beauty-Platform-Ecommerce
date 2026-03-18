@@ -1,0 +1,132 @@
+.cart-page {
+  padding-top: 86px;
+  padding-bottom: 90px;
+  min-height: 100vh;
+  background: var(--cream);
+}
+
+.page-head-wrap {
+  margin-bottom: 1.25rem;
+}
+
+.page-head-wrap h1 {
+  font-family: var(--serif);
+  color: var(--dark);
+  margin-bottom: 0.2rem;
+}
+
+.page-head-wrap p {
+  color: var(--muted);
+  margin: 0;
+}
+
+.cart-page-card,
+.cart-summary-box {
+  background: var(--white);
+  border-radius: 20px;
+  border: 1px solid var(--bd);
+  padding: 1rem;
+}
+
+.cart-page-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.cart-shop-btn,
+.cart-checkout-btn {
+  background: var(--r);
+  color: #fff;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.cart-shop-btn:hover,
+.cart-checkout-btn:hover {
+  background: var(--r-d);
+  color: #fff;
+}
+
+.cart-page-item {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--bd);
+}
+
+.cart-page-item:last-child {
+  border-bottom: none;
+}
+
+.cart-page-image {
+  width: 82px;
+  height: 82px;
+  object-fit: cover;
+  border-radius: 16px;
+  background: var(--r-xl);
+}
+
+.cart-page-info {
+  flex: 1;
+}
+
+.cart-page-info h4 {
+  margin: 0 0 0.25rem;
+  font-size: 1rem;
+}
+
+.cart-page-info p {
+  margin: 0 0 0.55rem;
+  color: var(--r);
+  font-weight: 700;
+}
+
+.cart-page-qty {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.cart-page-qty button {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--bd);
+  background: var(--white);
+}
+
+.cart-page-remove {
+  color: var(--r);
+  font-weight: 600;
+}
+
+.cart-summary-box h3 {
+  font-family: var(--serif);
+  margin-bottom: 1rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .cart-page {
+    padding-top: 76px;
+  }
+
+  .cart-page-item {
+    align-items: flex-start;
+  }
+
+  .cart-page-image {
+    width: 70px;
+    height: 70px;
+  }
+
+  .cart-page-remove {
+    font-size: 0.8rem;
+  }
+}

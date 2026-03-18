@@ -1,0 +1,49 @@
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  overflow-x: hidden;
+  background: var(--cream);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+main,
+section,
+header,
+footer,
+nav {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-bottom: calc(68px + env(safe-area-inset-bottom));
+  }
+
+  .mobile-sheet-modal {
+    margin: 0 !important;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .mobile-sheet-modal .modal-content {
+    border-radius: 24px 24px 0 0 !important;
+    min-height: auto;
+  }
+}

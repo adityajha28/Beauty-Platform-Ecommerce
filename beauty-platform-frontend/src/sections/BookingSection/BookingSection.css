@@ -1,0 +1,59 @@
+.booking-section {
+  padding: 2rem 0;
+  background: linear-gradient(140deg, var(--dark), #280e1a);
+}
+
+.booking-info-card {
+  color: #fff;
+  padding: 1rem 0.5rem;
+}
+
+.booking-chip {
+  display: inline-block;
+  background: rgba(191, 140, 90, 0.15);
+  color: var(--gold);
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 0.9rem;
+}
+
+.booking-title {
+  font-family: var(--serif);
+  font-size: 2rem;
+  line-height: 1.15;
+  margin-bottom: 0.8rem;
+}
+
+.booking-title em {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.booking-text {
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.8;
+  font-size: 0.92rem;
+  margin-bottom: 1.15rem;
+}
+
+.booking-feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.booking-feature-list li {
+  margin-bottom: 0.7rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.88rem;
+}
+
+@media (max-width: 768px) {
+  .booking-section {
+    padding: 1.75rem 0;
+  }
+}

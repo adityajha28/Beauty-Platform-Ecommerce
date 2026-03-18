@@ -1,0 +1,30 @@
+:root{
+
+--r:#C0395A;
+--r-d:#962C46;
+--r-l:#FCEAEF;
+--r-xl:#FDF5F7;
+
+--gold:#BF8C5A;
+--gold-l:#FAF1E8;
+
+--dark:#150810;
+--ink:#2E1320;
+--muted:#8E6070;
+
+--white:#fff;
+--cream:#FDF8F6;
+
+--bd:rgba(192,57,90,.12);
+
+--serif:'Cormorant Garamond', serif;
+--sans:'Jost', sans-serif;
+
+--ease:.32s cubic-bezier(.4,0,.2,1);
+
+--r12:12px;
+--r16:16px;
+--r20:20px;
+--r24:24px;
+
+}

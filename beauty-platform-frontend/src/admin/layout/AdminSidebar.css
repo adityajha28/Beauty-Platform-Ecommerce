@@ -1,0 +1,24 @@
+.admin-sidebar{
+
+width:220px;
+
+background:#111;
+
+color:white;
+
+display:flex;
+flex-direction:column;
+
+padding:1.5rem;
+
+gap:1rem;
+
+}
+
+.admin-sidebar a{
+
+color:white;
+
+font-size:.9rem;
+
+}

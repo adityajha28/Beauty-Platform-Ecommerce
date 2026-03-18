@@ -1,0 +1,14 @@
+.sticky-cart{
+
+position:fixed;
+bottom:60px;
+left:0;
+right:0;
+
+background:white;
+padding:10px;
+
+display:flex;
+justify-content:space-between;
+
+}

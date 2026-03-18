@@ -1,0 +1,17 @@
+.admin-topbar{
+
+height:60px;
+
+background:white;
+
+border-bottom:1px solid #ddd;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:0 1rem;
+
+}
