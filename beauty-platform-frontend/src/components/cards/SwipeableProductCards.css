@@ -1,0 +1,23 @@
+.swipe-prod-wrapper { width: 100%; position: relative; }
+.app-swiper-container { 
+  padding-bottom: 20px; /* Space for box shadows */
+  overflow: visible; 
+  clip-path: inset(-20px -100vw -20px -20px); 
+}
+
+/* Ensure slides don't stretch */
+.app-swiper-slide { 
+  height: auto; 
+  width: 240px; /* Desktop fixed width */
+}
+
+/* ─── MOBILE: Peek Effect ─── */
+@media (max-width: 768px) {
+  .app-swiper-slide { 
+    width: 160px; /* Small, app-like tiles */
+  }
+}
+
+@media (max-width: 360px) {
+  .app-swiper-slide { width: 140px; }
+}

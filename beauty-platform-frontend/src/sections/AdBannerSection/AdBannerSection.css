@@ -1,0 +1,182 @@
+/* src/sections/AdBannerSection/AdBannerSection.css */
+
+.ad-sec { 
+  padding: 3rem 5%; 
+}
+
+.ad-banner-card {
+  position: relative; 
+  width: 100%; 
+  border-radius: 32px; 
+  overflow: hidden;
+  cursor: pointer; 
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-end; /* Aligns the glass card to the right on desktop */
+  padding: 3rem; 
+  min-height: 420px;
+  background: var(--ink); /* Fallback color */
+}
+
+/* Background Image & Smart Overlay */
+.ad-bg { 
+  position: absolute; 
+  inset: 0; 
+  z-index: 0; 
+  overflow: hidden; 
+}
+.ad-bg img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  object-position: center 25%; /* Keeps faces centered */
+}
+
+/* Gradient allows the left side to be fully visible, and darkens heavily behind the text on the right */
+.ad-overlay { 
+  position: absolute; 
+  inset: 0; 
+  background: linear-gradient(to right, transparent 10%, rgba(21, 8, 16, 0.4) 40%, rgba(21, 8, 16, 0.95) 85%); 
+}
+
+/* Floating Animated Sparkles */
+.ad-sparkle { 
+  position: absolute; 
+  color: var(--gold, #BF8C5A); 
+  z-index: 1; 
+  filter: drop-shadow(0 0 8px rgba(191, 140, 90, 0.8));
+}
+.ad-sp-1 { top: 20%; right: 10%; width: 28px; }
+.ad-sp-2 { bottom: 20%; left: 45%; width: 20px; }
+
+/* The Glassmorphism Card */
+.ad-glass-content {
+  position: relative; 
+  z-index: 2; 
+  max-width: 500px;
+  background: rgba(255, 255, 255, 0.05); /* Very subtle frost */
+  backdrop-filter: blur(16px); 
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 2.5rem; 
+  border-radius: 24px;
+  color: white; 
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+}
+
+.ad-badge { 
+  background: var(--gold); 
+  color: white; 
+  font-size: 0.65rem; 
+  font-weight: 800; 
+  text-transform: uppercase; 
+  padding: 6px 12px; 
+  border-radius: 100px; 
+  letter-spacing: 0.1em; 
+  margin-bottom: 1.2rem; 
+  display: inline-block; 
+}
+
+.ad-glass-content h2 { 
+  font-family: var(--serif); 
+  font-size: 2.8rem; 
+  margin: 0 0 0.8rem; 
+  line-height: 1.1; 
+  font-weight: 800; 
+  text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+.ad-glass-content h2 em { 
+  color: var(--gold); 
+  font-style: italic; 
+  font-weight: 400; 
+}
+
+.ad-glass-content p { 
+  font-family: var(--sans);
+  font-size: 1.05rem; 
+  color: rgba(255, 255, 255, 0.9); 
+  margin-bottom: 2rem; 
+  line-height: 1.5; 
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Glowing Button */
+.ad-btn-glow { 
+  background: #fff; 
+  color: var(--ink); 
+  border: none; 
+  padding: 14px 28px; 
+  border-radius: 100px; 
+  font-weight: 800; 
+  font-family: var(--sans); 
+  cursor: pointer; 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center;
+  gap: 8px; 
+  font-size: 1rem;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.2); 
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.ad-btn-glow:hover { 
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.5); 
+  background: var(--r);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.btn-arrow { transition: transform 0.3s; }
+.ad-btn-glow:hover .btn-arrow { transform: translateX(5px); }
+
+/* ══════════════════════════════════════════════════
+   MOBILE VIEW OPTIMIZATIONS (App Feel)
+══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .ad-sec { 
+    padding: 1.5rem 5%; 
+  }
+  
+  .ad-banner-card { 
+    min-height: 480px; 
+    align-items: flex-end; /* Push glass card to the bottom */
+    justify-content: center; 
+    padding: 1rem; 
+    border-radius: 24px;
+  }
+  
+  .ad-overlay { 
+    /* Image visible fully at top, gradient protects text at bottom */
+    background: linear-gradient(to top, rgba(21, 8, 16, 0.98) 0%, rgba(21, 8, 16, 0.7) 40%, transparent 100%); 
+  }
+  
+  .ad-glass-content { 
+    width: 100%; 
+    padding: 1.8rem 1.5rem; 
+    text-align: center; 
+    border-radius: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    background: rgba(21, 8, 16, 0.2); /* Slightly darker on mobile for perfect contrast */
+    border-color: rgba(255,255,255,0.1);
+  }
+  
+  .ad-badge { font-size: 0.6rem; margin-bottom: 1rem; }
+  .ad-glass-content h2 { font-size: 2.2rem; }
+  .ad-glass-content p { font-size: 0.95rem; margin-bottom: 1.8rem; }
+  
+  .ad-btn-glow { 
+    width: 100%; 
+    font-size: 0.95rem; 
+    padding: 14px;
+  }
+  
+  /* Reposition sparkles for mobile */
+  .ad-sp-1 { top: 12%; right: 15%; width: 22px; }
+  .ad-sp-2 { bottom: 55%; left: 8%; width: 16px; }
+}
+
+@media (max-width: 380px) {
+  .ad-banner-card { min-height: 420px; }
+  .ad-glass-content h2 { font-size: 1.8rem; }
+}

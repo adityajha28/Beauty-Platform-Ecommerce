@@ -1,11 +1,14 @@
-.products-grid{
+.hm-products-sec { padding: 3rem 0; background: #ffffff; }
 
-display:grid;
+/* Reusing global section header styles defined earlier */
+.sec-header-flex { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; }
+.sec-title { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; color: var(--ink); margin: 0 0 4px 0; }
+.sec-title em { color: var(--r); font-style: italic; font-weight: 300; }
+.sec-subtitle { font-family: var(--sans); font-size: 0.9rem; color: var(--muted); margin: 0; font-weight: 500; }
+.view-all-link { font-family: var(--sans); font-weight: 700; color: var(--r); text-decoration: none; font-size: 0.9rem; margin-bottom: 0.5rem; }
 
-grid-template-columns:repeat(4,1fr);
-
-gap:1.5rem;
-
-margin-top:2rem;
-
+@media (max-width: 768px) {
+  .hm-products-sec { padding: 2rem 0; }
+  .sec-title { font-size: 1.8rem; }
+  .sec-subtitle { font-size: 0.75rem; }
 }

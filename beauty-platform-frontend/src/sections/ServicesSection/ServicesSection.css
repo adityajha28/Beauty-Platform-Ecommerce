@@ -1,94 +1,33 @@
-.services-section {
-  padding: 1.5rem 0 2rem;
-  background: var(--white);
-}
+.lux-services-sec { padding: 5rem 0; background: var(--white); }
+.lux-container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 5%; }
 
-.section-head {
-  margin-bottom: 1rem;
-}
+.lux-sec-header { margin-bottom: 2.5rem; text-align: center; }
+.lux-sec-chip { display: inline-block; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--r); background: var(--r-xl); padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 1rem; }
+.lux-sec-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1; color: var(--ink); margin-bottom: 1rem; font-weight: 800; }
+.lux-sec-title em { color: var(--r); font-style: italic; font-weight: 300; }
+.lux-sec-subtitle { color: var(--muted); font-size: 1.05rem; line-height: 1.6; max-width: 600px; margin: 0 auto; }
 
-.section-chip {
-  display: inline-block;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--r);
-  background: var(--r-l);
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  margin-bottom: 0.75rem;
-}
+/* Hide scrollbar for native app feel */
+.lux-tabs-container { margin-bottom: 3rem; width: 100%; overflow: hidden; }
+.lux-tabs-scroll { display: flex; gap: 0.8rem; overflow-x: auto; padding-bottom: 10px; scroll-behavior: smooth; -ms-overflow-style: none; scrollbar-width: none; justify-content: center; }
+.lux-tabs-scroll::-webkit-scrollbar { display: none; }
 
-.section-title {
-  font-family: var(--serif);
-  font-size: clamp(1.35rem, 3vw, 2.4rem);
-  line-height: 1.15;
-  color: var(--dark);
-  margin-bottom: 0.5rem;
-}
+.lux-tab { flex: 0 0 auto; border: 1.5px solid var(--bd); background: var(--white); color: var(--muted); border-radius: 100px; padding: 0.6rem 1.5rem; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
+.lux-tab.is-active, .lux-tab:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
 
-.section-title em {
-  color: var(--r);
-  font-style: italic;
-}
-
-.section-subtitle {
-  color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.7;
-  max-width: 640px;
-}
-
-.service-tabs-wrap {
-  margin: 1rem 0 1.25rem;
-}
-
-.service-tabs-scroll {
-  display: flex;
-  gap: 0.45rem;
-  overflow-x: auto;
-  padding-bottom: 0.15rem;
-  scrollbar-width: none;
-}
-
-.service-tabs-scroll::-webkit-scrollbar {
-  display: none;
-}
-
-.service-tab {
-  flex: 0 0 auto;
-  border: 1px solid var(--bd);
-  background: var(--white);
-  color: var(--muted);
-  border-radius: 999px;
-  padding: 0.45rem 0.95rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  transition: all var(--ease);
-}
-
-.service-tab.active,
-.service-tab:hover {
-  background: var(--r);
-  border-color: var(--r);
-  color: #fff;
-}
-
-.service-grid-row {
-  margin-bottom: 1.5rem;
-}
+/* Responsive Grid */
+.lux-service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
 
 @media (max-width: 768px) {
-  .services-section {
-    padding: 1.4rem 0 1.8rem;
-  }
+  .lux-services-sec { padding: 3rem 0; }
+  .lux-sec-header { text-align: left; }
+  .lux-sec-subtitle { margin: 0; font-size: 0.9rem; }
+  .lux-tabs-scroll { justify-content: flex-start; }
+  /* 2-column mobile grid */
+  .lux-service-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .lux-tab { padding: 0.5rem 1.2rem; font-size: 0.8rem; }
+}
 
-  .section-title {
-    font-size: 1.25rem;
-  }
-
-  .section-subtitle {
-    font-size: 0.8rem;
-  }
+@media (max-width: 480px) {
+  .lux-service-grid { grid-template-columns: 1fr; } /* Stack on very small phones */
 }

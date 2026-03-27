@@ -1,495 +1,177 @@
-/* ═══════════════════════════════════════════════════════════
-   BELLA BEAUTY — NAVBAR
-   Matches the exact design language of bella-beauty-v4.html
-   Tokens: --r, --gold, --ink, --muted, --pale, --cream, etc.
-═══════════════════════════════════════════════════════════ */
+/* src/components/Navbar/Navbar.css */
 
-/* ── HEADER SHELL ── */
+/* ── ADVANCED EASING VARIABLES ── */
+:root {
+  --spring-bouncy: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-smooth: cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  --ease-fluid: cubic-bezier(0.4, 0, 0.2, 1);
+  --glass-shadow: 0 10px 30px -10px rgba(192, 57, 90, 0.15), 0 4px 10px -4px rgba(0, 0, 0, 0.05);
+}
+
+@keyframes hdrIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: none; } }
+@keyframes cartPop { 0% { transform: scale(0) rotate(-20deg); } 65% { transform: scale(1.3) rotate(6deg); } 100% { transform: scale(1) rotate(0deg); } }
+@keyframes cartShake { 0%, 100% { transform: scale(1) rotate(0); } 25% { transform: scale(1.2) rotate(-10deg); } 50% { transform: scale(0.9) rotate(8deg); } 75% { transform: scale(1.1) rotate(-5deg); } }
+@keyframes dropIn { from { opacity: 0; transform: scale(0.95) translateY(-10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes ddItemIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+@keyframes fabPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(192,57,90,0.4); } 60% { box-shadow: 0 0 0 14px rgba(192,57,90,0); } }
+@keyframes fabRing { from { transform: scale(1); opacity: 0.7; } to { transform: scale(1.8); opacity: 0; } }
+@keyframes dotPop { from { transform: scaleX(0) translateX(-50%); } to { transform: scaleX(1) translateX(-50%); } }
+
+/* ── HEADER (All screens) ── */
 #hdr {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 60px;
-  background: rgba(253, 248, 246, 0.95);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-bottom: 1px solid var(--bd);
-  z-index: 1000;
-  transition: box-shadow 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 72px; z-index: 900;
+  background: rgba(253, 248, 246, 0.6);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.4s var(--ease-fluid);
+  animation: hdrIn 0.6s var(--spring-bouncy) both;
+}
+#hdr.scrolled {
+  height: 64px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: var(--glass-shadow);
+  border-bottom: 1px solid rgba(192, 57, 90, 0.08);
 }
 
-/* Scroll shadow — added via JS when window.scrollY > 8 */
-#hdr.up {
-  box-shadow: 0 4px 24px rgba(192, 57, 90, 0.09);
-}
-
-/* ── NAV ROW ── */
-.nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 60px;
-  gap: 0.75rem;
-}
+.nav-row { display: flex; align-items: center; height: 100%; gap: 1rem; }
 
 /* ── LOGO ── */
-.logo {
-  font-family: var(--serif);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--r);
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex-shrink: 0;
-  text-decoration: none;
-  letter-spacing: 0.01em;
-  transition: opacity 0.28s ease;
-}
-.logo:hover { opacity: 0.82; }
-
-.logo-dot {
-  width: 7px;
-  height: 7px;
-  background: var(--gold);
-  border-radius: 50%;
-  margin-bottom: 1px;
-  display: inline-block;
-  flex-shrink: 0;
-}
+.nav-logo { display: flex; align-items: center; gap: 0.4rem; text-decoration: none; transition: 0.3s; }
+.nav-logo:hover { transform: scale(1.02); }
+.nav-logo-gem { font-size: 1.1rem; color: var(--r); transition: 0.5s var(--spring-bouncy); }
+.nav-logo:hover .nav-logo-gem { transform: rotate(180deg) scale(1.2); }
+.nav-logo-name { font-family: var(--serif); font-size: 1.6rem; font-weight: 800; color: var(--ink); display: flex; align-items: center; gap: 0.2rem; }
+.nav-logo-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; margin-top: 6px; transition: 0.3s var(--spring-bouncy); }
+.nav-logo:hover .nav-logo-dot { background: var(--r); transform: translateY(-4px) scale(1.2); }
 
 /* ── DESKTOP NAV LINKS ── */
-.nav-links {
-  display: flex;
-  gap: 0.15rem;
-  list-style: none;
-  align-items: center;
-}
-
+.nav-links { display: flex; gap: 0.5rem; list-style: none; margin-left: 2rem; }
 .nav-links a {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--ink);
-  padding: 0.38rem 0.72rem;
-  border-radius: 8px;
-  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-  text-decoration: none;
-  white-space: nowrap;
-  display: block;
+  position: relative; padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 600;
+  color: var(--muted); text-decoration: none; border-radius: 12px;
+  transition: all 0.3s var(--ease-fluid); overflow: hidden;
 }
-.nav-links a:hover,
-.nav-links a.cur {
-  color: var(--r);
-  background: var(--r-xl);
+.nav-links a:hover { color: var(--r); background: rgba(192,57,90,0.05); }
+.nav-links a.active { color: var(--r); background: rgba(192,57,90,0.08); }
+.link-bar {
+  position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+  width: 18px; height: 3px; background: var(--r); border-radius: 4px;
+  animation: dotPop 0.4s var(--spring-bouncy) both;
 }
 
-/* ── RIGHT SIDE CLUSTER ── */
-.nav-end {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  flex-shrink: 0;
+/* ── ACTIONS ── */
+.nav-end { display: flex; align-items: center; gap: 0.75rem; margin-left: auto; }
+.nav-icon-btn {
+  width: 44px; height: 44px; border-radius: 14px; border: none; background: transparent; cursor: pointer;
+  color: var(--ink); display: grid; place-items: center; position: relative;
+  transition: all 0.3s var(--spring-bouncy);
+}
+.nav-icon-btn:hover { background: var(--r-xl); color: var(--r); transform: translateY(-2px) scale(1.05); }
+.nav-icon-btn svg { width: 22px; height: 22px; }
+.nav-icon-btn.cart-bounce svg { animation: cartShake 0.6s var(--spring-bouncy); }
+
+.cart-badge {
+  position: absolute; top: -2px; right: -2px; min-width: 20px; height: 20px;
+  background: var(--r); color: #fff; font-size: 0.65rem; font-weight: 800;
+  border-radius: 20px; display: grid; place-items: center; border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(192,57,90,0.4); animation: cartPop 0.5s var(--spring-bouncy) both;
 }
 
-/* ── ICON BUTTON (cart etc.) ── */
-.ico-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--ink);
-  position: relative;
-  flex-shrink: 0;
-  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.ico-btn:hover {
-  background: var(--r-l);
-  color: var(--r);
-}
-.ico-btn svg {
-  width: 19px;
-  height: 19px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.8;
-}
+/* ── DESKTOP AUTH / PROFILE ── */
+.nav-auth-pair { display: flex; gap: 0.5rem; }
+.btn-login { padding: 0.5rem 1.2rem; border-radius: 100px; border: 1.5px solid rgba(192,57,90,0.2); background: transparent; color: var(--r); font-weight: 600; cursor: pointer; transition: 0.3s var(--ease-fluid); }
+.btn-login:hover { background: var(--r-xl); border-color: var(--r); transform: translateY(-2px); }
+.btn-signup { padding: 0.5rem 1.4rem; border-radius: 100px; border: none; background: linear-gradient(135deg, var(--r), var(--r-d)); color: #fff; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; box-shadow: 0 4px 15px rgba(192,57,90,0.3); transition: 0.3s var(--spring-bouncy); }
+.btn-signup:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 25px rgba(192,57,90,0.4); }
 
-/* Cart badge */
-.cart-dot {
-  position: absolute;
-  top: -3px;
-  right: -3px;
-  min-width: 17px;
-  height: 17px;
-  background: var(--r);
-  color: #fff;
-  font-size: 0.58rem;
-  font-weight: 700;
-  border-radius: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4px;
-  border: 2px solid var(--cream);
-  pointer-events: none;
-  animation: cartPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+.prof-wrap { position: relative; }
+.prof-btn {
+  display: flex; align-items: center; gap: 0.6rem; padding: 0.3rem 0.8rem 0.3rem 0.3rem;
+  border-radius: 100px; background: transparent; border: 1px solid transparent; cursor: pointer;
+  transition: 0.3s var(--ease-fluid);
 }
-@keyframes cartPop {
-  from { transform: scale(0); }
-  to   { transform: scale(1); }
-}
+.prof-btn:hover { background: var(--off); border-color: rgba(0,0,0,0.05); }
+.prof-av { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: white; font-weight: 700; font-family: var(--serif); font-size: 1rem; transition: 0.4s var(--spring-bouncy); }
+.av-customer { background: linear-gradient(135deg, var(--r), #e0708a); box-shadow: 0 3px 10px rgba(192,57,90,0.3); }
+.av-admin { background: linear-gradient(135deg, var(--gold), #9b6e3e); box-shadow: 0 3px 10px rgba(191,140,90,0.3); }
+.prof-btn:hover .prof-av { transform: scale(1.1) rotate(5deg); }
+.prof-name { font-weight: 600; color: var(--ink); }
+.chev { transition: 0.4s var(--spring-bouncy); }
+.prof-btn[aria-expanded="true"] .chev { transform: rotate(180deg); color: var(--r); }
 
-/* ── AUTH BUTTONS (logged out state) ── */
-.nav-auth-btns {
-  display: flex;
-  align-items: center;
-  gap: 0.38rem;
+.prof-dropdown {
+  position: absolute; top: calc(100% + 15px); right: 0; min-width: 240px;
+  background: rgba(255,255,255,0.95); backdrop-filter: blur(20px);
+  border-radius: 20px; border: 1px solid rgba(255,255,255,0.5);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1), 0 4px 15px rgba(0,0,0,0.05);
+  padding: 0.5rem; z-index: 1100; animation: dropIn 0.4s var(--spring-bouncy) both;
 }
+.dd-item {
+  display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.8rem;
+  border-radius: 12px; color: var(--ink); text-decoration: none; font-weight: 600;
+  transition: 0.3s var(--ease-fluid); animation: ddItemIn 0.4s var(--spring-bouncy) both;
+}
+.dd-item:hover { background: var(--r-xl); color: var(--r); transform: translateX(4px); }
+.dd-ico { width: 30px; height: 30px; border-radius: 8px; background: var(--off); display: grid; place-items: center; transition: 0.3s; }
+.dd-item:hover .dd-ico { background: #fff; box-shadow: 0 2px 8px rgba(192,57,90,0.15); transform: scale(1.1); }
 
-.nav-login {
-  font-family: var(--sans);
-  font-size: 0.83rem;
-  font-weight: 500;
-  color: var(--r);
-  padding: 0.42rem 0.9rem;
-  border-radius: 100px;
-  border: 1.5px solid var(--r-l);
-  background: var(--r-xl);
-  cursor: pointer;
-  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
-  line-height: 1;
-}
-.nav-login:hover {
-  border-color: var(--r);
-  background: var(--r-l);
-}
-
-.nav-signup {
-  font-family: var(--sans);
-  font-size: 0.83rem;
-  font-weight: 600;
-  color: #fff;
-  padding: 0.42rem 0.9rem;
-  border-radius: 100px;
-  background: var(--r);
-  border: none;
-  cursor: pointer;
-  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
-  line-height: 1;
-  box-shadow: 0 3px 12px rgba(192, 57, 90, 0.28);
-}
-.nav-signup:hover {
-  background: var(--r-d);
-  transform: translateY(-1px);
-  box-shadow: 0 5px 16px rgba(192, 57, 90, 0.38);
-}
-
-/* ── PROFILE BUTTON WRAPPER ── */
-.profile-wrap {
-  position: relative;
-}
-
-/* Profile trigger button */
-.profile-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.28rem 0.55rem 0.28rem 0.28rem;
-  border-radius: 100px;
-  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: var(--sans);
-}
-.profile-btn:hover {
-  background: var(--r-xl);
-}
-
-/* Customer profile button */
-.profile-btn.customer:hover { background: var(--r-xl); }
-
-/* Admin profile button */
-.profile-btn.admin:hover { background: rgba(191, 140, 90, 0.1); }
-
-/* Profile name label */
-.profile-name {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--ink);
-  max-width: 80px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.admin-name { color: var(--gold); }
-
-/* Chevron icon inside profile button */
-.chevron-ico {
-  width: 13px;
-  height: 13px;
-  stroke: var(--pale);
-  fill: none;
-  stroke-width: 2.2;
-  flex-shrink: 0;
-  transition: transform 0.28s ease;
-}
-.profile-btn[aria-expanded="true"] .chevron-ico {
-  transform: rotate(180deg);
-}
-
-/* ── AVATAR CIRCLES ── */
-.profile-av {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: #fff;
-  flex-shrink: 0;
-  line-height: 1;
-  position: relative;
-}
-
-/* Customer avatar — rose gradient */
-.customer-av {
-  background: linear-gradient(135deg, var(--r), #D4607A);
-  font-family: var(--serif);
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-/* Admin avatar — gold gradient */
-.admin-av {
-  background: linear-gradient(135deg, var(--gold), #8B6340);
-}
-.admin-av svg {
-  width: 15px;
-  height: 15px;
-  stroke: #fff;
-  fill: none;
-  stroke-width: 2;
-}
-
-/* Admin online badge dot */
-.admin-av-badge {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 8px;
-  height: 8px;
-  background: #16A34A;
-  border-radius: 50%;
-  border: 2px solid var(--cream);
-  animation: onlinePulse 2.5s ease infinite;
-}
-@keyframes onlinePulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.55; }
-}
-
-/* ── PROFILE DROPDOWN ── */
-.profile-dropdown {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  min-width: 210px;
-  background: #fff;
-  border-radius: 16px;
-  border: 1px solid rgba(192, 57, 90, 0.08);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
-  padding: 0.35rem;
-  z-index: 1100;
-  animation: dropdownIn 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  transform-origin: top right;
-}
-@keyframes dropdownIn {
-  from { opacity: 0; transform: scale(0.92) translateY(-6px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-/* Admin dropdown — gold border tint */
-.admin-dropdown {
-  border-color: rgba(191, 140, 90, 0.15);
-}
-
-/* Dropdown header block */
-.dropdown-header {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.7rem 0.75rem 0.65rem;
-}
-
-.admin-header {
-  background: linear-gradient(135deg, rgba(191, 140, 90, 0.08), transparent);
-  border-radius: 12px;
-}
-
-.dh-av {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #fff;
-  flex-shrink: 0;
-  font-family: var(--serif);
-}
-
-/* Admin dropdown header avatar — smaller */
-.admin-av-sm {
-  background: linear-gradient(135deg, var(--gold), #8B6340);
-  width: 32px;
-  height: 32px;
-}
-.admin-av-sm svg {
-  width: 15px;
-  height: 15px;
-  stroke: #fff;
-  fill: none;
-  stroke-width: 2;
-}
-
-.dh-name {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.2;
-}
-.dh-role {
-  font-size: 0.65rem;
-  color: var(--muted);
-  margin-top: 0.1rem;
-  font-weight: 500;
-}
-.admin-role {
-  color: var(--gold);
-  font-weight: 600;
-}
-
-/* Divider */
-.dropdown-divider {
-  height: 1px;
-  background: rgba(192, 57, 90, 0.07);
-  margin: 0.25rem 0.5rem;
-}
-
-/* Dropdown menu items */
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.55rem 0.75rem;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--ink);
-  text-decoration: none;
-  background: none;
-  border: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  font-family: var(--sans);
-  transition: all 0.22s ease;
-}
-.dropdown-item:hover {
-  background: var(--r-xl);
-  color: var(--r);
-}
-
-.di-ico {
-  font-size: 0.85rem;
-  width: 20px;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-/* Logout item gets a subtle danger tint */
-.logout-item { color: var(--muted); }
-.logout-item:hover {
-  background: var(--r-l);
-  color: var(--r);
-}
-
-/* ── HAMBURGER (mobile) ── */
-.ham {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 4.5px;
-  padding: 6px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  transition: background 0.22s ease;
-}
-.ham:hover { background: var(--r-xl); }
-
-.ham i {
-  display: block;
-  height: 2px;
-  background: var(--ink);
-  border-radius: 2px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: center;
-}
-.ham i:nth-child(1) { width: 20px; }
-.ham i:nth-child(2) { width: 14px; }
-.ham i:nth-child(3) { width: 17px; }
-
-/* Animate to × when active */
-.ham.x i:nth-child(1) { width: 18px; transform: rotate(45deg) translate(4.5px, 4.5px); }
-.ham.x i:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.ham.x i:nth-child(3) { width: 18px; transform: rotate(-45deg) translate(4.5px, -4.5px); }
+/* ── HAMBURGER & BOTTOM NAV (HIDDEN ON DESKTOP) ── */
+.hamburger { display: none; }
+.bottom-nav { display: none; }
 
 /* ═══════════════════════════════════════
-   RESPONSIVE
+   RESPONSIVE LOGIC (MOBILE TRIGGER)
 ═══════════════════════════════════════ */
-
-/* Tablet — hide nav links, show hamburger */
 @media (max-width: 768px) {
-  .nav-links { display: none; }
-  .ham { display: flex; }
+  /* Hide Desktop Elements */
+  .nav-links, .nav-auth-pair, .prof-name, .chev { display: none; }
+  .prof-btn { padding: 0.2rem; border-radius: 50%; } /* Minimal profile on tablet if needed, but hamburger takes over */
+  .prof-wrap { display: none; } /* Actually, hide profile entirely, handled by drawer */
 
-  /* On mobile, hide the text name next to avatar — just show avatar */
-  .profile-name { display: none; }
-  .chevron-ico  { display: none; }
+  /* Show Hamburger */
+  .hamburger {
+    display: flex; flex-direction: column; justify-content: center; gap: 5px;
+    width: 44px; height: 44px; padding: 8px; border-radius: 12px;
+    background: transparent; border: none; cursor: pointer; transition: 0.3s;
+  }
+  .hamburger:active { background: var(--r-xl); }
+  .hb-line { height: 2px; background: var(--ink); border-radius: 2px; transition: 0.4s var(--spring-smooth); }
+  .hb-top { width: 20px; } .hb-mid { width: 14px; } .hb-bottom { width: 18px; }
+  
+  .hamburger.is-open .hb-top { width: 22px; transform: translateY(7px) rotate(45deg); background: var(--r); }
+  .hamburger.is-open .hb-mid { opacity: 0; transform: scaleX(0); }
+  .hamburger.is-open .hb-bottom { width: 22px; transform: translateY(-7px) rotate(-45deg); background: var(--r); }
 
-  /* Tighter padding on the profile button */
-  .profile-btn { padding: 0.2rem; border-radius: 50%; }
-  .profile-btn:hover { background: var(--r-xl); }
+  /* Bottom Nav visible */
+  .bottom-nav {
+    display: block; position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(0,0,0,0.05); z-index: 890;
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.03);
+  }
+  .bn-inner { display: flex; align-items: flex-end; justify-content: space-around; padding: 0.4rem 0.2rem; }
+  .bn-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; text-decoration: none; flex: 1; transition: 0.3s var(--spring-bouncy); }
+  .bn-item:active { transform: scale(0.9); }
+  .bn-icon { width: 28px; height: 28px; display: grid; place-items: center; transition: 0.4s var(--spring-bouncy); }
+  .bn-icon svg { width: 22px; height: 22px; color: var(--pale); transition: 0.3s; }
+  .bn-item.bn-active .bn-icon { transform: scale(1.2) translateY(-4px); }
+  .bn-item.bn-active .bn-icon svg { color: var(--r); filter: drop-shadow(0 4px 6px rgba(192,57,90,0.3)); }
+  .bn-label { font-size: 0.6rem; font-weight: 600; color: var(--pale); transition: 0.3s; }
+  .bn-item.bn-active .bn-label { color: var(--r); font-weight: 700; transform: translateY(-2px); }
+  
+  .bn-fab-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; }
+  .bn-fab {
+    width: 56px; height: 56px; border-radius: 20px; margin-top: -24px;
+    background: linear-gradient(135deg, var(--r), var(--r-d));
+    display: grid; place-items: center; box-shadow: 0 8px 25px rgba(192,57,90,0.4);
+    animation: fabPulse 3s infinite; transition: 0.4s var(--spring-bouncy);
+  }
+  .bn-fab:active { transform: scale(0.85); box-shadow: 0 4px 15px rgba(192,57,90,0.4); }
+  .bn-fab-ring { position: absolute; inset: 0; border-radius: 20px; border: 2px solid rgba(192,57,90,0.6); animation: fabRing 2.5s infinite; pointer-events: none; }
+  .bn-fab-label { font-size: 0.6rem; font-weight: 800; color: var(--r); margin-top: 4px; text-transform: uppercase; }
 
-  /* Keep both login + signup on mobile but smaller */
-  .nav-login,
-  .nav-signup { font-size: 0.76rem; padding: 0.38rem 0.75rem; }
-}
-
-/* Small phones */
-@media (max-width: 380px) {
-  .nav-login  { display: none; } /* only show Sign Up on very small screens */
-  .nav-signup { font-size: 0.75rem; padding: 0.36rem 0.7rem; }
-}
-
-/* Extra small — keep navbar readable */
-@media (max-width: 320px) {
-  .logo { font-size: 1.25rem; }
-  .logo-dot { width: 5px; height: 5px; }
+  body { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
 }

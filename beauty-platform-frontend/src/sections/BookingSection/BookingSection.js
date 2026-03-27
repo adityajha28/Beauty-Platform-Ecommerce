@@ -1,39 +1,34 @@
-import { Container, Row, Col } from "react-bootstrap";
-import BookingForm from "../../components/forms/BookingForm";
+import BookingForm from "../../components/forms/BookingForm"; // Assuming this exists
 import "./BookingSection.css";
 
-function BookingSection() {
+export default function BookingSection() {
   return (
-    <section id="booking" className="booking-section">
-      <Container fluid="lg">
-        <Row className="g-4 align-items-start">
-          <Col lg={5} className="d-none d-lg-block">
-            <div className="booking-info-card">
-              <span className="booking-chip">Book Appointment</span>
-              <h2 className="booking-title">
-                Beauty booking in a <em>mobile-first flow</em>
-              </h2>
-              <p className="booking-text">
-                Choose date, time, service, and notes in one clean sheet-style
-                experience built for quick mobile booking.
-              </p>
+    <section id="booking" className="lux-booking-sec">
+      <div className="lux-booking-wrap">
+        
+        {/* Left: Editorial Information */}
+        <div className="lux-booking-info">
+          <span className="lux-booking-chip">Book Appointment</span>
+          <h2 className="lux-booking-title">
+            Beauty booking in a <em>mobile-first flow</em>
+          </h2>
+          <p className="lux-booking-text">
+            Choose your date, time, and service in one clean, elegant experience built for quick booking.
+          </p>
 
-              <ul className="booking-feature-list">
-                <li>Easy appointment scheduling</li>
-                <li>Supports custom package request</li>
-                <li>Backend-ready payload structure</li>
-                <li>Responsive from phone to desktop</li>
-              </ul>
-            </div>
-          </Col>
+          <ul className="lux-booking-features">
+            <li><span className="chk">✓</span> Easy appointment scheduling</li>
+            <li><span className="chk">✓</span> Custom package requests</li>
+            <li><span className="chk">✓</span> Secure, instant confirmation</li>
+          </ul>
+        </div>
 
-          <Col lg={7}>
-            <BookingForm />
-          </Col>
-        </Row>
-      </Container>
+        {/* Right: The Form */}
+        <div className="lux-booking-form-wrapper">
+          <BookingForm />
+        </div>
+
+      </div>
     </section>
   );
 }
-
-export default BookingSection;

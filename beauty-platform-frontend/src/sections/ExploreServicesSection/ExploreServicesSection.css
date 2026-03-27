@@ -1,0 +1,30 @@
+/* src/sections/ExploreServicesSection/ExploreServicesSection.css */
+.explore-sec { padding: 4rem 0 2rem; background: #ffffff; }
+.app-container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+
+.sec-header { margin-bottom: 2rem; }
+.sec-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 800; color: var(--ink); margin: 0; }
+.sec-title em { color: var(--r); font-style: italic; font-weight: 300; }
+
+.cat-grid {
+  display: grid;
+  /* Desktop: 6 to 8 items per row */
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 2rem 1.5rem;
+}
+
+/* ─── MOBILE GRID ─── */
+@media (max-width: 768px) {
+  .explore-sec { padding: 2.5rem 0 1rem; }
+  .sec-header { margin-bottom: 1.5rem; }
+  
+  .cat-grid {
+    /* Mobile: Exactly 4 columns to mimic native apps */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem 0.8rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .cat-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem 0.6rem; }
+}

@@ -8,14 +8,8 @@ import { tokenStorage } from '../services/authService';
  *
  * Behaviour:
  *  ✅  Token present + role is 'admin'   →  render children normally
- *  🔁  No token at all                   →  /auth?redirect=<current path>&mode=admin
+ *  🔁  No token at all                   →  /admin/login?redirect=<current path>
  *  🔁  Token present but role is 'customer' →  redirect customer to home
- *
- * The `mode=admin` param tells AuthPage to open on the Admin tab directly
- * so the admin doesn't have to manually switch.
- *
- * Usage in App.js:
- *   <Route path="/admin/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
  */
 export default function AdminRoute({ children }) {
   const location = useLocation();
@@ -27,7 +21,7 @@ export default function AdminRoute({ children }) {
   if (!token) {
     return (
       <Navigate
-        to={`/auth?redirect=${encodeURIComponent(location.pathname)}&mode=admin`}
+        to={`/admin/login?redirect=${encodeURIComponent(location.pathname)}`}
         replace
       />
     );

@@ -1,71 +1,24 @@
-import ProductCard from "../../components/cards/ProductCard";
+import SwipeableProductCards from "../../components/cards/SwipeableProductCards";
 import "./ProductsSection.css";
 
-function ProductsSection(){
+export default function ProductsSection({ products = [] }) {
+  if (!products.length) return null;
 
-const products=[
+  return (
+    <section className="hm-products-sec">
+      <div className="app-container">
+        
+        <div className="sec-header-flex">
+          <div>
+            <h2 className="sec-title">Featured <em>Products</em></h2>
+            <p className="sec-subtitle">Curated premium cosmetics.</p>
+          </div>
+          <a href="/products" className="view-all-link">View All</a>
+        </div>
 
-{
-id:1,
-name:"Vitamin C Serum",
-price:899,
-image:"/images/product1.jpg"
-},
+        <SwipeableProductCards products={products} />
 
-{
-id:2,
-name:"Luxury Face Cream",
-price:1299,
-image:"/images/product2.jpg"
-},
-
-{
-id:3,
-name:"Hair Repair Oil",
-price:699,
-image:"/images/product3.jpg"
-},
-
-{
-id:4,
-name:"Makeup Kit",
-price:2499,
-image:"/images/product4.jpg"
+      </div>
+    </section>
+  );
 }
-
-]
-
-return(
-
-<section className="section products">
-
-<div className="wrap">
-
-<h2 className="section-title">
-
-Featured Products
-
-</h2>
-
-<div className="products-grid">
-
-{products.map(product=>(
-
-<ProductCard
-key={product.id}
-product={product}
-/>
-
-))}
-
-</div>
-
-</div>
-
-</section>
-
-)
-
-}
-
-export default ProductsSection;

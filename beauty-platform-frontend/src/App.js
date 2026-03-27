@@ -1,5 +1,5 @@
 // src/App.js
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 /* ── User pages ── */
 import Home     from "./pages/Home/Home";
@@ -11,6 +11,7 @@ import Careers  from "./pages/Careers/Careers";
 
 /* ── Auth ── */
 import AuthPage from "./auth/pages/AuthPage";
+import AdminAuthPage from "./auth/pages/AdminAuthPage"; // ✅ ADDED
 
 /* ── Route guards ── */
 import ProtectedRoute from "./auth/components/ProtectedRoute";
@@ -27,6 +28,7 @@ import AdminUsers    from "./admin/pages/Users/Users";
 /* ── Shared UI ── */
 import NotificationProvider from "./components/notifications/NotificationProvider";
 import PageTransition       from "./components/animations/PageTransition";
+import WhatsappButton       from "./components/WhatsappButton/WhatsappButton";
 
 /* ── 404 ── */
 import NotFound from "./pages/NotFound/NotFound";
@@ -39,11 +41,19 @@ import NotFound from "./pages/NotFound/NotFound";
                         redirects to /auth?redirect=<path>
                         if no valid customer token
    Admin              — wrapped in <AdminRoute>
-                        redirects to /auth?redirect=<path>&mode=admin
+                        redirects to /admin/login?redirect=<path>   ✅ UPDATED
                         if no valid admin token
    * (catch-all)      — 404 page
 ════════════════════════════════════════════════════════════ */
 function App() {
+  const location = useLocation();
+
+  // Logic to hide WhatsApp on Admin and 404 pages
+  const validUserPaths = ["/", "/products", "/careers", "/auth", "/cart", "/checkout", "/profile"];
+  const isAdminRoute = location.pathname.startsWith("/admin");
+  const isNotFound = !validUserPaths.includes(location.pathname) && !isAdminRoute;
+  const showWhatsapp = !isAdminRoute && !isNotFound;
+
   return (
     <>
       {/* Global notification toasts (app-wide, not auth-specific) */}
@@ -84,13 +94,13 @@ function App() {
         />
 
         {/* ════════════════════════
-            AUTH PAGE
-            Single route handles Customer login/signup
-            AND Admin login — mode switched via UI or ?mode=admin
-            Guards already-logged-in users and redirects them away.
+            AUTH PAGES
+            /auth         → Customer login/signup
+            /admin/login  → Admin login (separate & secure)
         ════════════════════════ */}
 
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/admin/login" element={<AdminAuthPage />} /> {/* ✅ ADDED */}
 
         {/* ════════════════════════
             PROTECTED USER ROUTES
@@ -134,7 +144,7 @@ function App() {
         {/* ════════════════════════
             ADMIN ROUTES
             Requires valid admin JWT (role === 'admin').
-            Unauthorized → /auth?redirect=<path>&mode=admin
+            Unauthorized → /admin/login?redirect=<path>   ✅ UPDATED
             Customer token → redirected to /
         ════════════════════════ */}
 
@@ -200,6 +210,9 @@ function App() {
         <Route path="*" element={<NotFound />} />
 
       </Routes>
+
+      {/* RENDER CONDITIONALLY */}
+      {showWhatsapp && <WhatsappButton />}
     </>
   );
 }

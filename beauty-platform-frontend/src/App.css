@@ -1,38 +1,68 @@
-.App {
-  text-align: center;
+/* src/App.css */
+
+/* Global Luxury Variables */
+:root {
+  --r: #C0395A;
+  --r-d: #962C46;
+  --r-l: #FCEAEF;
+  --r-xl: #FDF5F7;
+  --gold: #BF8C5A;
+  --dark: #150810;
+  --ink: #2E1320;
+  --muted: #8E6070;
+  --pale: #C4A0AD;
+  --cream: #FDF8F6;
+  --off: #F7F0F3;
+  --white: #FFFFFF;
+  --bd: rgba(192, 57, 90, 0.12);
+  
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --ease: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Global App Resets & Smoothing */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--sans);
+  background-color: var(--white);
+  color: var(--ink);
+  overflow-x: hidden;
+  /* Prevents pull-to-refresh bounce on mobile to feel more like a native app */
+  overscroll-behavior-y: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Base Link Styles */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Custom Scrollbar for Desktop */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--r-xl);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(192, 57, 90, 0.3);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(192, 57, 90, 0.6);
+}
+
+/* App Level Container */
+#root {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  min-height: 100dvh;
 }

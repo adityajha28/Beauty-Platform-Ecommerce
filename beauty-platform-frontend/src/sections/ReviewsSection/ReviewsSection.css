@@ -1,0 +1,34 @@
+/* src/sections/ReviewsSection/ReviewsSection.css */
+.rev-sec { padding: 3rem 0 5rem; background: var(--off); }
+
+.rev-scroll-row {
+  display: flex; gap: 1.5rem; overflow-x: auto; padding: 1rem 0 24px;
+  scroll-snap-type: x mandatory; scrollbar-width: none;
+}
+.rev-scroll-row::-webkit-scrollbar { display: none; }
+
+.rev-card {
+  flex: 0 0 320px; scroll-snap-align: start;
+  background: #fff; border-radius: 20px; padding: 1.5rem;
+  border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+  display: flex; flex-direction: column;
+}
+
+.rev-stars { display: flex; gap: 2px; margin-bottom: 1rem; }
+.rev-stars svg { width: 14px; }
+.star-fill { color: #F59E0B; }
+.star-empty { color: #e0e0e0; }
+
+.rev-text { font-family: var(--serif); font-size: 1.1rem; color: var(--ink); line-height: 1.5; font-style: italic; margin-bottom: 1.5rem; flex: 1; }
+
+.rev-author { display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem; }
+.rev-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--r-l); color: var(--r); display: grid; place-items: center; font-weight: 800; font-family: var(--sans); }
+.rev-author h4 { margin: 0 0 2px; font-family: var(--sans); font-size: 0.9rem; color: var(--ink); }
+.rev-author span { font-size: 0.75rem; color: var(--muted); }
+
+@media (max-width: 768px) {
+  .rev-sec { padding: 2rem 0 4rem; }
+  .rev-scroll-row { gap: 12px; }
+  .rev-card { flex: 0 0 280px; padding: 1.2rem; }
+  .rev-text { font-size: 1rem; }
+}

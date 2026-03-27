@@ -1,0 +1,34 @@
+/* src/components/home/SignatureMakeupSection.css */
+.sig-makeup-sec {
+  padding: 6rem 0;
+  background: linear-gradient(180deg, var(--white) 0%, var(--r-xl) 100%);
+  position: relative; overflow: hidden;
+}
+
+.sig-makeup-wrap {
+  width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 5%;
+  display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem; align-items: center;
+}
+
+.sig-editorial { display: flex; flex-direction: column; align-items: flex-start; }
+.sig-tag { font-size: 0.75rem; font-weight: 800; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+.sig-title { font-family: var(--serif); font-size: clamp(2.5rem, 4vw, 3.5rem); color: var(--ink); line-height: 1.1; margin: 0 0 1.5rem 0; font-weight: 800; }
+.sig-title span { color: var(--r); font-style: italic; font-weight: 300; }
+.sig-desc { font-size: 1.05rem; color: var(--muted); line-height: 1.6; margin-bottom: 2.5rem; max-width: 90%; }
+.sig-explore-btn { padding: 14px 28px; background: var(--ink); color: white; text-decoration: none; border-radius: 100px; font-weight: 700; transition: 0.3s; }
+.sig-explore-btn:hover { background: var(--r); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(192,57,90,0.2); }
+
+.sig-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+
+@media (max-width: 1024px) {
+  .sig-makeup-wrap { grid-template-columns: 1fr; gap: 3rem; }
+  .sig-editorial { text-align: center; align-items: center; }
+  .sig-desc { max-width: 100%; }
+}
+
+@media (max-width: 768px) {
+  .sig-makeup-sec { padding: 4rem 0; }
+  .sig-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 1.5rem; padding-bottom: 20px; /* Hide scrollbar magic */ -ms-overflow-style: none; scrollbar-width: none; }
+  .sig-grid::-webkit-scrollbar { display: none; }
+  .sig-card-wrapper { flex: 0 0 85%; scroll-snap-align: center; }
+}

@@ -1,41 +1,130 @@
-.bottom-nav{
+/* src/components/BottomNav/BottomNav.css */
 
-position:fixed;
-
-bottom:0;
-left:0;
-right:0;
-
-height:60px;
-
-background:white;
-
-border-top:1px solid var(--bd);
-
-display:flex;
-
-justify-content:space-around;
-
-align-items:center;
-
-z-index:1000;
-
+/* Hidden completely on Desktop */
+.mob-bottom-nav {
+  display: none;
 }
 
-.bottom-nav a{
+/* ══════════════════════════════════════════════════
+   MOBILE ONLY (Visible ≤ 768px)
+══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  
+  .mob-bottom-nav {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    /* Native Glassmorphism App Feel */
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border-top: 1px solid rgba(192, 57, 90, 0.1);
+    
+    /* Env safe area prevents overlap with iOS home indicator */
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 1000;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.03);
+  }
 
-display:flex;
-flex-direction:column;
-align-items:center;
+  .mbn-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 65px; /* Taller, more ergonomic touch area */
+    padding: 0 5px;
+  }
 
-font-size:.7rem;
+  .mbn-link {
+    text-decoration: none;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent; /* Removes blue flash on Android */
+  }
 
-color:var(--muted);
+  .mbn-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 60px;
+    height: 55px;
+    border-radius: 16px;
+    color: var(--muted);
+    transition: color 0.3s ease;
+  }
 
+  .mbn-item.is-active {
+    color: var(--r); /* Active Luxury Red */
+  }
+
+  /* Sliding Indicator rendered by Framer Motion */
+  .mbn-active-bg {
+    position: absolute;
+    inset: 0;
+    background: var(--r-xl); /* Light red tint */
+    border-radius: 16px;
+    z-index: 0;
+  }
+
+  .mbn-icon-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mbn-icon-wrapper svg {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Slight upward bump on active */
+  .mbn-item.is-active .mbn-icon-wrapper svg {
+    transform: translateY(-2px);
+  }
+
+  .mbn-label {
+    position: relative;
+    z-index: 1;
+    font-size: 0.65rem;
+    font-weight: 600;
+    font-family: var(--sans);
+    letter-spacing: 0.02em;
+  }
+
+  .mbn-item.is-active .mbn-label {
+    font-weight: 800;
+  }
+
+  /* Backend-Ready Dynamic Cart Badge */
+  .mbn-badge {
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    background: var(--r);
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 100px;
+    border: 2px solid white;
+    box-shadow: 0 2px 5px rgba(192, 57, 90, 0.4);
+    z-index: 2;
+    pointer-events: none;
+  }
 }
 
-.bottom-nav a.active{
-
-color:var(--r);
-
+/* Extra small devices adjustments */
+@media (max-width: 360px) {
+  .mbn-item { width: 50px; }
+  .mbn-icon-wrapper svg { width: 20px; height: 20px; }
+  .mbn-label { font-size: 0.6rem; }
 }
