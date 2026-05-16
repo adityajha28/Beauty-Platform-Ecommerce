@@ -1,189 +1,165 @@
 // src/components/Hero/Hero.js
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import "./Hero.css";
 
-/* ─── BACKEND-READY MOCK DATA ─── */
+/* ─── ICONS ─── */
+const IcoSearch = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
+const IcoArrowRight = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>;
+const IcoSparkle = () => <svg viewBox="0 0 24 24" fill="#F59E0B" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>;
+
+/* ─── LIVE BACKGROUND IMAGES (2-Second Carousel) ─── */
+const HERO_IMAGES = [
+  "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1600&auto=format&fit=crop", // Makeup
+  "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=1600&auto=format&fit=crop", // Hair
+  "https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=1600&auto=format&fit=crop"  // Spa
+];
+
+/* ─── OFFERS DATA ─── */
 const OFFERS = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=800&auto=format&fit=crop",
-    tag: "Exclusive",
+    badge: "EXCLUSIVE",
     title: "Bridal Radiance",
-    desc: "Complete luxury makeover with 20% off for the bridal season."
+    desc: "Complete luxury makeover with 20% off for the bridal season.",
+    img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=200&auto=format&fit=crop",
+    link: "/services?category=Packages"
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop",
-    tag: "Trending",
-    title: "Keratin Spa",
-    desc: "Revitalize your hair with our advanced signature keratin formula."
+    badge: "COUPON",
+    title: "Premium Skincare",
+    desc: "Get flat ₹500 off on our glowing skin bundle. Code: GLOW500",
+    img: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=200&auto=format&fit=crop",
+    link: "/products"
   },
   {
     id: 3,
-    image: "https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=800&auto=format&fit=crop",
-    tag: "New Arrival",
-    title: "24K Gold Facial",
-    desc: "Experience ultimate skin hydration with our new premium therapy."
+    badge: "NEW LAUNCH",
+    title: "Keratin Spa Therapy",
+    desc: "Introductory offer: Smooth, frizz-free hair at just ₹1999.",
+    img: "https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?q=80&w=200&auto=format&fit=crop",
+    link: "/services?category=Hair Care"
   }
 ];
 
-/* ─── SVG ICONS ─── */
-const IcoLocation = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-    <circle cx="12" cy="10" r="3" />
-  </svg>
-);
-
-const IcoSearch = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="11" cy="11" r="8" />
-    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-  </svg>
-);
-
-const IcoSparkle = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 3v18M3 12h18M8.5 8.5l7 7M15.5 8.5l-7 7" />
-  </svg>
-);
-
-const IcoArrowRight = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="btn-arrow">
-    <line x1="5" y1="12" x2="19" y2="12" />
-    <polyline points="12 5 19 12 12 19" />
-  </svg>
-);
-
 export default function Hero() {
-  const [activeSlide, setActiveSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const navigate = useNavigate();
+  const [bgIndex, setBgIndex] = useState(0);
+  const [offerIndex, setOfferIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
-  // Backend-Ready Carousel Auto-Play
+  // Background Carousel (2 seconds)
   useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % OFFERS.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [isPaused]);
+    const bgTimer = setInterval(() => {
+      setBgIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 2000);
+    return () => clearInterval(bgTimer);
+  }, []);
 
+  // Offer Slider (5 seconds)
+  useEffect(() => {
+    const offerTimer = setInterval(() => {
+      setOfferIndex((prev) => (prev + 1) % OFFERS.length);
+    }, 5000);
+    return () => clearInterval(offerTimer);
+  }, []);
+
+  // Handlers
   const handleSearch = (e) => {
     e.preventDefault();
-    if (!searchQuery.trim()) return;
-    console.log("Searching backend for:", searchQuery);
-    // Navigate to results or trigger API
+    if (searchQuery.trim()) navigate(`/services?search=${encodeURIComponent(searchQuery)}`);
   };
 
+  const handleBookNow = () => navigate("/auth");
+  const handleExplore = () => navigate("/services");
+
+  const currentOffer = OFFERS[offerIndex];
+
   return (
-    <section id="hero" className="app-hero">
+    <section className="sh-hero">
       
-      {/* ─── 1. LUXURY SALON/SPA BACKGROUND IMAGE ─── */}
-      <div className="app-hero-bg">
-        <div className="app-hero-overlay" />
+      {/* ─── BACKGROUND CAROUSEL & OVERLAY ─── */}
+      <div className="sh-bg-container">
+        <AnimatePresence mode="popLayout">
+          <motion.img 
+            key={bgIndex}
+            src={HERO_IMAGES[bgIndex]}
+            alt="Salon Background"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.3 }} /* Kept very dim to match dark screenshot */
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="sh-bg-img"
+          />
+        </AnimatePresence>
+        <div className="sh-bg-overlay" />
       </div>
 
-      <div className="app-hero-ui">
+      {/* ─── FOREGROUND CONTENT (Single Screen Viewport) ─── */}
+      <div className="sh-content">
         
-        {/* ─── 2. TOP: SEARCH BAR & ACTION BUTTONS ─── */}
-        <div className="app-hero-top">
+        {/* 1. EXACT SEARCH BAR */}
+        <form className="sh-search-bar" onSubmit={handleSearch}>
+          <div className="sh-loc-block">
+            <span className="sh-loc-label">CURRENT LOCATION</span>
+            <span className="sh-loc-value">Nagpur, Maharashtra</span>
+          </div>
           
-          {/* Dynamic App-Style Search Card */}
-          <div className="reveal-drop delay-1 w-100">
-            <form 
-              className={`glass-search-bar ${isSearchFocused ? "is-focused" : ""}`} 
-              onSubmit={handleSearch}
-            >
-              <div className="glass-search-loc">
-                <div className="loc-icon-pulse">
-                  <IcoLocation />
-                </div>
-                <div className="loc-text">
-                  <span className="loc-label">Current Location</span>
-                  <span className="loc-city">Nagpur, Maharashtra</span>
-                </div>
-              </div>
-              
-              <div className="glass-search-div" />
-              
-              <div className="glass-search-field">
-                <input 
-                  type="text" 
-                  className="glass-search-input"
-                  placeholder="Search haircuts, makeup, spa..." 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onFocus={() => setIsSearchFocused(true)}
-                  onBlur={() => setIsSearchFocused(false)}
-                />
-                <button type="submit" className="glass-search-btn" aria-label="Search">
-                  <IcoSearch />
-                </button>
-              </div>
-            </form>
+          <div className="sh-divider" />
+          
+          <div className="sh-input-block">
+            <input 
+              type="text" 
+              placeholder="Search haircuts, makeup, spa..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button type="submit" className="sh-search-btn">
+              <IcoSearch />
+            </button>
           </div>
+        </form>
 
-          {/* PREMIUM ACTION BUTTONS */}
-          <div className="reveal-drop delay-2 w-100">
-            <div className="app-hero-actions">
-              <button className="btn-premium-book">
-                <span>Book Now</span>
-                <IcoArrowRight />
-              </button>
-              <button className="btn-premium-explore">
-                <IcoSparkle />
-                <span>Explore Services</span>
-              </button>
-            </div>
-          </div>
-
+        {/* 2. COMPACT APP-STYLE ACTION BUTTONS */}
+        <div className="sh-actions">
+          <motion.button whileTap={{ scale: 0.95 }} className="sh-btn-book" onClick={handleBookNow}>
+            Book Now <IcoArrowRight />
+          </motion.button>
+          
+          <motion.button whileTap={{ scale: 0.95 }} className="sh-btn-explore" onClick={handleExplore}>
+            <IcoSparkle /> Explore Services
+          </motion.button>
         </div>
 
-        {/* ─── 3. BOTTOM: ELEVATED OFFERS CAROUSEL ─── */}
-        <div 
-          className="app-hero-bottom reveal-slide-up delay-3"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          <div className="glass-promo-card">
+        {/* 3. RUNNING OFFER SLIDER */}
+        <div className="sh-offer-wrapper">
+          <motion.div 
+            className="sh-offer-card"
+            key={currentOffer.id}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.4 }}
+            onClick={() => navigate(currentOffer.link)}
+          >
+            <div className="sh-offer-img">
+              <img src={currentOffer.img} alt={currentOffer.title} />
+            </div>
             
-            {OFFERS.map((offer, index) => {
-              const isActive = index === activeSlide;
-              return (
-                <div 
-                  key={offer.id} 
-                  className={`glass-promo-slide ${isActive ? "is-active" : ""}`}
-                >
-                  <div className="promo-img-wrap">
-                    <img src={offer.image} alt={offer.title} loading="lazy" />
-                  </div>
-                  
-                  <div className="promo-text-wrap">
-                    <span className="promo-badge">{offer.tag}</span>
-                    <h3 className="promo-title">{offer.title}</h3>
-                    <p className="promo-desc">{offer.desc}</p>
-                  </div>
-                </div>
-              );
-            })}
-
-            {/* Premium Dash Indicators */}
-            <div className="promo-nav-cluster">
-              {OFFERS.map((_, index) => (
-                <button 
-                  key={index}
-                  className={`promo-dash ${index === activeSlide ? "is-active" : ""}`}
-                  onClick={() => setActiveSlide(index)}
-                  aria-label={`View offer ${index + 1}`}
-                >
-                  <div className="promo-dash-fill" />
-                </button>
-              ))}
+            <div className="sh-offer-details">
+              <span className="sh-offer-badge">{currentOffer.badge}</span>
+              <h3 className="sh-offer-title">{currentOffer.title}</h3>
+              <p className="sh-offer-desc">{currentOffer.desc}</p>
             </div>
 
-          </div>
+            <div className="sh-offer-dots">
+              {OFFERS.map((_, idx) => (
+                <div key={idx} className={`sh-dot ${idx === offerIndex ? "active" : ""}`} />
+              ))}
+            </div>
+          </motion.div>
         </div>
 
       </div>

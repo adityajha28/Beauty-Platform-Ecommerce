@@ -4,6 +4,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 /* ── User pages ── */
 import Home     from "./pages/Home/Home";
 import Products from "./pages/Products/Products";
+import Services from "./pages/Services/Services"; // ✅ ADDED SERVICES IMPORT
 import Cart     from "./pages/Cart/Cart";
 import Checkout from "./pages/Checkout/Checkout";
 import Profile  from "./pages/Profile/Profile";
@@ -11,7 +12,7 @@ import Careers  from "./pages/Careers/Careers";
 
 /* ── Auth ── */
 import AuthPage from "./auth/pages/AuthPage";
-import AdminAuthPage from "./auth/pages/AdminAuthPage"; // ✅ ADDED
+import AdminAuthPage from "./auth/pages/AdminAuthPage"; 
 
 /* ── Route guards ── */
 import ProtectedRoute from "./auth/components/ProtectedRoute";
@@ -41,7 +42,7 @@ import NotFound from "./pages/NotFound/NotFound";
                         redirects to /auth?redirect=<path>
                         if no valid customer token
    Admin              — wrapped in <AdminRoute>
-                        redirects to /admin/login?redirect=<path>   ✅ UPDATED
+                        redirects to /admin/login?redirect=<path>  
                         if no valid admin token
    * (catch-all)      — 404 page
 ════════════════════════════════════════════════════════════ */
@@ -49,7 +50,8 @@ function App() {
   const location = useLocation();
 
   // Logic to hide WhatsApp on Admin and 404 pages
-  const validUserPaths = ["/", "/products", "/careers", "/auth", "/cart", "/checkout", "/profile"];
+  // ✅ ADDED "/services" TO VALID PATHS
+  const validUserPaths = ["/", "/products", "/services", "/careers", "/auth", "/cart", "/checkout", "/profile"];
   const isAdminRoute = location.pathname.startsWith("/admin");
   const isNotFound = !validUserPaths.includes(location.pathname) && !isAdminRoute;
   const showWhatsapp = !isAdminRoute && !isNotFound;
@@ -84,6 +86,16 @@ function App() {
           }
         />
 
+        {/* ✅ ADDED SERVICES ROUTE */}
+        <Route
+          path="/services"
+          element={
+            <PageTransition>
+              <Services />
+            </PageTransition>
+          }
+        />
+
         <Route
           path="/careers"
           element={
@@ -100,7 +112,7 @@ function App() {
         ════════════════════════ */}
 
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/admin/login" element={<AdminAuthPage />} /> {/* ✅ ADDED */}
+        <Route path="/admin/login" element={<AdminAuthPage />} /> 
 
         {/* ════════════════════════
             PROTECTED USER ROUTES
@@ -144,7 +156,7 @@ function App() {
         {/* ════════════════════════
             ADMIN ROUTES
             Requires valid admin JWT (role === 'admin').
-            Unauthorized → /admin/login?redirect=<path>   ✅ UPDATED
+            Unauthorized → /admin/login?redirect=<path>  
             Customer token → redirected to /
         ════════════════════════ */}
 

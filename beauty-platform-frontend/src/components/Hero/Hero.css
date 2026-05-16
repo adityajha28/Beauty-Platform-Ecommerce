@@ -1,345 +1,317 @@
 /* src/components/Hero/Hero.css */
 
 :root {
-  --spring-bouncy: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  --ease-smooth: cubic-bezier(0.19, 1, 0.22, 1);
-  --brand-pink: #E84A70; 
-  --brand-deep: #962C46;
+  --sh-red: #D62A56; /* Exact glowing red/pink from screenshot */
+  --sh-bg-dark: #0f0a0d; /* Deep plum/black background */
+  --sh-card-bg: #221c21; /* Slightly lighter dark for components */
+  --sh-text: #ffffff;
 }
 
-/* ─── CANVAS LAYOUT ─── */
-.app-hero {
+.sh-hero {
   position: relative;
   width: 100%;
-  height: 80vh; 
-  min-height: 550px;
-  max-height: 850px;
+  /* CRITICAL: Forces everything to fit in one mobile screen */
+  height: calc(100vh - 60px); /* Adjust 60px based on your actual navbar height */
+  min-height: 500px; 
+  background: var(--sh-bg-dark);
   overflow: hidden;
-  background-color: #0f0a13;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* ─── VIBRANT BACKGROUND IMAGE ─── */
-.app-hero-bg {
+/* ─── BACKGROUND ─── */
+.sh-bg-container {
   position: absolute;
   inset: 0;
-  background: url('https://wilful-azure-byaewuo7et.edgeone.app/makeup-artist-work.jpg') center/cover no-repeat;
   z-index: 0;
-  animation: slowPan 30s ease-in-out infinite alternate;
 }
-
-@keyframes slowPan {
-  0% { transform: scale(1) translate(0, 0); }
-  100% { transform: scale(1.08) translate(-1%, 2%); }
-}
-
-/* Luxury Dark Gradient Overlay */
-.app-hero-overlay {
+.sh-bg-img {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom, 
-    rgba(15, 10, 19, 0.8) 0%, 
-    rgba(15, 10, 19, 0.2) 30%, 
-    rgba(15, 10, 19, 0.1) 60%, 
-    rgba(15, 10, 19, 0.85) 100%
-  );
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: luminosity; /* Keeps it strictly in the background */
 }
-
-/* ─── UI CONTAINER ─── */
-.app-hero-ui {
+.sh-bg-overlay {
   position: absolute;
   inset: 0;
+  background: radial-gradient(circle at center, rgba(15,10,13,0.7) 0%, rgba(15,10,13,0.98) 100%);
+}
+
+/* ─── FOREGROUND CONTENT ─── */
+.sh-content {
+  position: relative;
   z-index: 10;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: calc(90px + 1rem) 5% 2.5rem;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.w-100 { width: 100%; display: flex; justify-content: center; }
-
-/* ─── ANIMATIONS ─── */
-.reveal-drop { animation: dropIn 0.8s var(--ease-smooth) both; }
-.reveal-slide-up { animation: slideUp 0.8s var(--ease-smooth) both; }
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.25s; }
-.delay-3 { animation-delay: 0.4s; }
-
-@keyframes dropIn {
-  from { opacity: 0; transform: translateY(-30px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ══════════════════════════════════════════════════
-   TOP: TRANSPARENT SEARCH BAR
-══════════════════════════════════════════════════ */
-.app-hero-top {
+  max-width: 850px;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly; /* Automatically spaces Top, Mid, Bottom evenly */
   align-items: center;
-  width: 100%;
-  gap: 1.5rem;
+  padding: 1.5rem 1rem;
 }
 
-.glass-search-bar {
+/* ─── 1. SEARCH BAR (Screenshot exact match) ─── */
+.sh-search-bar {
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 800px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: rgba(40, 35, 40, 0.85); /* Dark grey glass */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 100px;
-  padding: 8px 8px 8px 24px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 6px 6px 6px 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
-.glass-search-bar.is-focused {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 20px 50px rgba(232, 74, 112, 0.25), 0 0 0 4px rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+.sh-loc-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.sh-loc-label {
+  font-family: var(--sans);
+  font-size: 0.5rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.sh-loc-value {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--sh-text);
+  white-space: nowrap;
 }
 
-.glass-search-loc { display: flex; align-items: center; gap: 12px; cursor: pointer; white-space: nowrap; }
-.loc-icon-pulse { position: relative; display: flex; align-items: center; justify-content: center; color: var(--brand-pink); }
-.loc-icon-pulse::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; background: var(--brand-pink); opacity: 0.3; animation: pulse 2s infinite; }
-@keyframes pulse { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(1.8); opacity: 0; } }
-
-.loc-text { display: flex; flex-direction: column; }
-.loc-label { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; color: rgba(255,255,255,0.7); letter-spacing: 0.05em; }
-.loc-city { font-family: var(--sans); font-size: 0.95rem; font-weight: 800; color: #fff; }
-
-.glass-search-div { width: 1px; height: 30px; background: rgba(255,255,255,0.2); margin: 0 18px; }
-
-.glass-search-field { display: flex; align-items: center; flex: 1; }
-.glass-search-input {
-  flex: 1; border: none; background: transparent; font-family: var(--sans);
-  font-size: 1.05rem; color: #fff; outline: none; min-width: 0;
+.sh-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255,255,255,0.15);
+  margin: 0 16px;
 }
-.glass-search-input::placeholder { color: rgba(255,255,255,0.6); font-weight: 500; }
 
-.glass-search-btn {
-  width: 54px; height: 54px; border-radius: 50%;
-  background: var(--brand-pink); color: white; border: none; cursor: pointer;
-  display: grid; place-items: center; flex-shrink: 0;
-  box-shadow: 0 4px 15px rgba(232, 74, 112, 0.4);
-  transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+.sh-input-block {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
-.glass-search-btn:hover { background: #fff; color: var(--brand-pink); transform: rotate(10deg) scale(1.05); }
-.glass-search-btn:active { transform: scale(0.9) rotate(0deg); }
+.sh-input-block input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--sh-text);
+  min-width: 0; /* Prevents overflow */
+}
+.sh-input-block input::placeholder { color: rgba(255,255,255,0.4); }
 
-/* ══════════════════════════════════════════════════
-   NEW PREMIUM ACTION BUTTONS
-══════════════════════════════════════════════════ */
-.app-hero-actions {
+.sh-search-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #E63965, #B01E42);
+  border: none;
+  color: white;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(214, 42, 86, 0.4);
+}
+.sh-search-btn svg { width: 18px; }
+
+
+/* ─── 2. ACTION BUTTONS ─── */
+.sh-actions {
   display: flex;
   gap: 16px;
   justify-content: center;
-  align-items: center;
+  width: 100%;
 }
 
-/* Primary "Book Now" Button */
-.btn-premium-book {
+.sh-btn-book {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(120deg, #ff4d6d, #c9184a, #800f2f);
-  background-size: 200% 200%;
-  animation: liquidGradient 4s ease infinite;
+  background: linear-gradient(135deg, #DE2A5C, #B61B40);
   color: white;
   border: none;
+  padding: 14px 28px;
   border-radius: 100px;
-  padding: 0 32px;
-  height: 54px;
   font-family: var(--sans);
+  font-size: 1rem;
   font-weight: 800;
-  font-size: 1.05rem;
   cursor: pointer;
-  /* Inner highlight to make it look like 3D glass/plastic */
-  box-shadow: 0 10px 30px rgba(201, 24, 74, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.2);
-  transition: all 0.4s var(--spring-bouncy);
+  box-shadow: 0 0 25px rgba(222, 42, 92, 0.45); /* Intense glow from screenshot */
 }
+.sh-btn-book svg { width: 18px; }
 
-@keyframes liquidGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.btn-arrow { width: 18px; height: 18px; transition: transform 0.3s ease; }
-
-.btn-premium-book:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 15px 35px rgba(201, 24, 74, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.3);
-}
-.btn-premium-book:hover .btn-arrow {
-  transform: translateX(4px);
-}
-.btn-premium-book:active { transform: translateY(0) scale(0.96); }
-
-/* Secondary "Explore" Button */
-.btn-premium-explore {
+.sh-btn-explore {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  background: rgba(40, 35, 40, 0.8);
   color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 14px 28px;
   border-radius: 100px;
-  padding: 0 28px;
-  height: 54px;
   font-family: var(--sans);
-  font-weight: 700;
   font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.4s ease;
+}
+.sh-btn-explore svg { width: 16px; }
+
+
+/* ─── 3. RUNNING OFFER SLIDER ─── */
+.sh-offer-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.btn-premium-explore svg { width: 16px; height: 16px; color: #FFD700; }
-
-.btn-premium-explore:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.6);
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-.btn-premium-explore:active { transform: translateY(0) scale(0.96); }
-
-
-/* ══════════════════════════════════════════════════
-   BOTTOM: FLOATING OFFERS CAROUSEL
-══════════════════════════════════════════════════ */
-.app-hero-bottom { width: 100%; display: flex; justify-content: center; }
-
-.glass-promo-card {
-  position: relative; width: 100%; max-width: 650px; 
-  height: 120px; 
-  background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-  border-radius: 28px; padding: 10px;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2); overflow: hidden;
+.sh-offer-card {
+  display: flex;
+  align-items: center;
+  background: var(--sh-card-bg);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 12px;
+  width: 100%;
+  max-width: 600px; /* Limits width on desktop */
+  gap: 16px;
+  position: relative;
+  cursor: pointer;
 }
 
-.glass-promo-slide {
-  display: flex; align-items: center; gap: 16px;
-  height: 100%; width: 100%;
-  position: absolute; top: 0; left: 0; padding: 10px;
-  opacity: 0; transform: translateX(20px);
-  transition: all 0.6s var(--ease-smooth); pointer-events: none;
+.sh-offer-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
 }
-.glass-promo-slide.is-active { opacity: 1; transform: translateX(0); pointer-events: auto; }
-
-.promo-img-wrap { width: 100px; height: 100%; border-radius: 20px; overflow: hidden; flex-shrink: 0; }
-.promo-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
-
-.promo-text-wrap { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-right: 15px; }
-
-.promo-badge {
-  align-self: flex-start; background: rgba(255,255,255,0.2); color: #fff;
-  font-size: 0.6rem; font-weight: 800; text-transform: uppercase;
-  padding: 4px 10px; border-radius: 100px; margin-bottom: 6px; letter-spacing: 0.05em;
-  border: 1px solid rgba(255,255,255,0.3);
+.sh-offer-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(80%); /* Gives it that premium monochrome look */
 }
-.promo-title { margin: 0 0 4px 0; font-family: var(--serif); font-size: 1.2rem; color: #fff; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-.promo-desc { margin: 0; font-family: var(--sans); font-size: 0.8rem; color: rgba(255,255,255,0.8); font-weight: 500; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* Progress Lines */
-.promo-nav-cluster {
-  position: absolute; bottom: 12px; right: 20px;
-  display: flex; gap: 6px; background: rgba(0,0,0,0.3);
-  padding: 6px 10px; border-radius: 100px;
+.sh-offer-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 40px; /* Space for dots on right */
 }
-.promo-dash { width: 20px; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.2); border: none; cursor: pointer; position: relative; overflow: hidden; padding: 0; }
-.promo-dash-fill { position: absolute; inset: 0; background: var(--brand-pink); transform: scaleX(0); transform-origin: left; }
-.promo-dash.is-active .promo-dash-fill { animation: progressFill 5s linear forwards; }
-@keyframes progressFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.sh-offer-badge {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 100px;
+  width: fit-content;
+  margin-bottom: 6px;
+}
+
+.sh-offer-title {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--sh-text);
+  margin: 0 0 4px;
+}
+
+.sh-offer-desc {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sh-offer-dots {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  gap: 4px;
+}
+.sh-dot {
+  width: 12px;
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+.sh-dot.active {
+  background: var(--sh-red);
+  width: 16px;
+}
 
 
-/* ══════════════════════════════════════════════════
-   MOBILE VIEW (Stacked Search & Ergonomic Buttons)
-══════════════════════════════════════════════════ */
+/* ─── MOBILE EXACT FITTING ─── */
 @media (max-width: 768px) {
   
-  .app-hero {
-    height: 65dvh; 
-    min-height: 500px; 
-  }
-
-  .app-hero-ui {
-    padding: calc(65px + 1rem) 5% 1rem;
-  }
-
-  .app-hero-top { gap: 1rem; }
-
-  /* Stacked, transparent Search Card for Mobile */
-  .glass-search-bar { 
-    flex-direction: column; 
-    align-items: stretch; 
-    border-radius: 20px; 
-    padding: 12px; 
+  /* Stack the search bar elements so it stays thick and matches screenshot without breaking text */
+  .sh-search-bar {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 20px;
+    padding: 12px;
+    gap: 8px;
   }
   
-  .glass-search-loc { 
-    width: 100%; 
-    padding-bottom: 10px; 
-    border-bottom: 1px solid rgba(255,255,255,0.2); 
-    margin-bottom: 8px; 
-  }
-  .loc-city { font-size: 0.9rem; color: #fff; }
+  .sh-loc-block { align-items: flex-start; padding-left: 8px; }
   
-  .glass-search-div { display: none; } 
+  .sh-divider { width: 100%; height: 1px; margin: 4px 0; }
   
-  .glass-search-field { 
-    width: 100%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
+  .sh-input-block {
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    padding: 4px 4px 4px 12px;
   }
-  .glass-search-input { font-size: 0.95rem; padding: 4px 0; color: #fff; }
-  .glass-search-input::placeholder { color: rgba(255,255,255,0.7); }
-  .glass-search-btn { width: 40px; height: 40px; border-radius: 14px; }
-  .glass-search-btn svg { width: 16px; height: 16px; }
+  
+  /* COMPACT NATIVE APP BUTTONS (Side-by-Side) */
+  .sh-actions {
+    flex-direction: row; /* Keep side-by-side */
+    gap: 10px;          /* Tighter gap */
+    width: 100%;
+  }
+  
+  .sh-btn-book, .sh-btn-explore {
+    flex: 1;            /* Share width equally */
+    padding: 12px 8px;  /* Smaller padding */
+    font-size: 0.85rem; /* Smaller, app-like font */
+    border-radius: 100px; 
+  }
 
-  /* Ergonomic Action Buttons */
-  .app-hero-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  
-  .btn-premium-book, .btn-premium-explore { 
-    height: 44px; /* Perfect native touch target height */
-    padding: 0; 
-    font-size: 0.85rem; 
-    border-radius: 14px; 
+  .sh-btn-book svg, .sh-btn-explore svg {
+    width: 14px; /* Scaled down icons */
   }
-  .btn-premium-book { gap: 4px; }
-  .btn-arrow { width: 16px; height: 16px; }
-  .btn-premium-explore svg { display: none; } /* Hide icon to keep text centered cleanly */
 
-  /* Compact Offers Carousel */
-  .glass-promo-card { 
-    height: 100px; /* Slim curved rectangle */
-    border-radius: 20px; 
-    padding: 6px; 
-  }
-  .glass-promo-slide { gap: 12px; padding: 6px; }
-  .promo-img-wrap { width: 80px; height: 100%; border-radius: 14px; }
-  .promo-text-wrap { padding-right: 5px; }
-  .promo-badge { font-size: 0.5rem; padding: 2px 6px; margin-bottom: 4px; }
-  .promo-title { font-size: 1rem; margin-bottom: 2px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
-  .promo-desc { font-size: 0.75rem; -webkit-line-clamp: 1; color: rgba(255,255,255,0.9); }
-  .promo-nav-cluster { bottom: 10px; right: 12px; padding: 4px 8px; }
-  .promo-dash { width: 12px; height: 3px; }
+  /* Compact the offer card slightly */
+  .sh-offer-img { width: 70px; height: 70px; }
+  .sh-offer-title { font-size: 1rem; }
+  .sh-offer-desc { font-size: 0.75rem; }
 }
