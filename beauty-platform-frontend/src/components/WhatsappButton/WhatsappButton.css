@@ -11,6 +11,21 @@
   pointer-events: none; /* Allows clicks to pass through except on the button */
 }
 
+/* Inside FloatingEdgeStack — no own fixed position */
+.wa-fixed-wrapper--stacked {
+  position: static;
+  bottom: auto;
+  right: auto;
+  z-index: auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.wa-fixed-wrapper--stacked .wa-label {
+  display: none;
+}
+
 .wa-main-btn {
   pointer-events: auto;
   width: 56px;
@@ -72,7 +87,7 @@
 
 /* App-feel for Mobile */
 @media (max-width: 768px) {
-  .wa-fixed-wrapper {
+  .wa-fixed-wrapper:not(.wa-fixed-wrapper--stacked) {
     bottom: calc(85px + env(safe-area-inset-bottom)); /* Respects iOS safe areas */
   }
 }

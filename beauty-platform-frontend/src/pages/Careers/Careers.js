@@ -42,7 +42,7 @@ function Careers() {
           <div className="careers-hero">
             <span className="career-chip">Join Our Team</span>
             <h1>
-              Build your future with <em>Bella Beauty</em>
+              Build your future with <em>Oraya Beauty</em>
             </h1>
             <p>
               We’re building a premium beauty and commerce experience. If you

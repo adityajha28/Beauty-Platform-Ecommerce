@@ -1,5 +1,37 @@
 /* src/sections/AdBannerSection/AdBannerSection.css */
 
+.ad-dots {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+  z-index: 5;
+}
+
+.ad-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  padding: 0;
+}
+
+.ad-dot.active {
+  background: #fff;
+  width: 22px;
+  border-radius: 100px;
+}
+
+.ad-subtitle {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin: -0.25rem 0 0.5rem;
+}
+
 .ad-sec { 
   padding: 3rem 5%; 
 }

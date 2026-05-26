@@ -68,7 +68,7 @@ export default function ForgotPasswordView() {
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              placeholder="admin@bellabeauty.in"
+              placeholder="admin@orayabeauty.com"
               autoComplete="email"
               delay={0}
             />

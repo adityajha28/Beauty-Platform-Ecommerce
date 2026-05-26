@@ -1,6 +1,7 @@
 // src/auth/views/SuccessView.js
 import React, { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { userStorage } from '../../utils/userStorage';
 import FormCard    from '../components/FormCard';
 
 /**
@@ -20,7 +21,8 @@ export default function SuccessView({
 }) {
   const { userName } = useAuth();
   const isAdmin      = variant === 'admin';
-  const firstName    = userName?.split(' ')[0] || (isAdmin ? 'Admin' : 'there');
+  const displayName  = userName || userStorage.getDisplayName();
+  const firstName    = displayName?.split(' ')[0] || (isAdmin ? 'Admin' : 'there');
 
   useEffect(() => {
     if (!onRedirect) return;
@@ -48,7 +50,7 @@ export default function SuccessView({
         <div className="success-sub">
           {isAdmin
             ? `Authenticated as Super Admin. Loading the dashboard…`
-            : `Welcome to Bella Beauty, ${firstName}. Your account is verified and ready.`
+            : `Welcome to Oraya Beauty, ${firstName}. Your account is verified and ready.`
           }
         </div>
 
@@ -60,7 +62,7 @@ export default function SuccessView({
           <span>
             {isAdmin
               ? 'Redirecting to admin panel…'
-              : 'Redirecting to dashboard…'
+              : 'Setting up your profile…'
             }
           </span>
         </div>

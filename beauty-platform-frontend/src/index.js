@@ -14,6 +14,8 @@ import "./styles/animations.css";
 
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+import { WishlistProvider } from "./context/WishlistContext";
+import { UserProvider } from "./context/UserContext";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +34,15 @@ root.render(
 
             <CartProvider>
 
-              <App />
+              <WishlistProvider>
+
+                <UserProvider>
+
+                  <App />
+
+                </UserProvider>
+
+              </WishlistProvider>
 
             </CartProvider>
 

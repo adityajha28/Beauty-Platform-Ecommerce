@@ -1,20 +1,18 @@
 const jwt = require('jsonwebtoken');
+const env = require('../config/env');
 
 exports.verifyToken = (req, res, next) => {
   try {
-    // 1. Get token from header
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({
-        message: "Access denied. No token provided",
+        message: 'Access denied. No token provided',
       });
     }
 
     const token = authHeader.split(' ')[1];
-
-    // 2. Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, env.jwtSecret);
 
     // 3. Attach user to request
     req.user = decoded;

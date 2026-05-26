@@ -1,5 +1,13 @@
 // src/services/authService.js
 import API from '../../services/api';
+import {
+  setAccessToken,
+  setRefreshToken,
+  clearTokens as clearApiTokens,
+} from '../../utils/tokenManager';
+import { userStorage } from '../../utils/userStorage';
+
+export const AUTH_FLOW_KEY = 'oraya_auth_flow';
 
 /* ─────────────────────────────────────────────────────────────
    TOKEN STORAGE HELPERS
@@ -10,11 +18,19 @@ const TOKEN_KEY   = 'bb_access_token';
 const REFRESH_KEY = 'bb_refresh_token';
 const ROLE_KEY    = 'bb_role';
 
+function notifyAuthChange() {
+  window.dispatchEvent(new Event('oraya-auth-changed'));
+}
+
 export const tokenStorage = {
   set(accessToken, refreshToken, role) {
-    localStorage.setItem(TOKEN_KEY,   accessToken);
+    localStorage.setItem(TOKEN_KEY, accessToken);
     localStorage.setItem(REFRESH_KEY, refreshToken);
-    localStorage.setItem(ROLE_KEY,    role);
+    localStorage.setItem(ROLE_KEY, role);
+    /* Keep axios api.js interceptors in sync (bb_* vs access_token) */
+    if (accessToken) setAccessToken(accessToken);
+    if (refreshToken) setRefreshToken(refreshToken);
+    notifyAuthChange();
   },
   getAccess()  { return localStorage.getItem(TOKEN_KEY);   },
   getRefresh() { return localStorage.getItem(REFRESH_KEY); },
@@ -23,6 +39,10 @@ export const tokenStorage = {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(REFRESH_KEY);
     localStorage.removeItem(ROLE_KEY);
+    clearApiTokens();
+    sessionStorage.removeItem(AUTH_FLOW_KEY);
+    userStorage.clearUserData();
+    notifyAuthChange();
   },
   isLoggedIn() { return !!localStorage.getItem(TOKEN_KEY); },
 };
@@ -50,8 +70,8 @@ const authService = {
    * @param {string} phone  — full number with country code e.g. "+919876543210"
    * @returns {{ message: string }}
    */
-  sendOTP: (phone) =>
-    API.post('/auth/customer/send-otp', { phone }),
+  sendOTP: (phone, mode) =>
+    API.post('/auth/customer/send-otp', { phone, ...(mode ? { mode } : {}) }),
 
   /**
    * POST /auth/customer/verify-otp

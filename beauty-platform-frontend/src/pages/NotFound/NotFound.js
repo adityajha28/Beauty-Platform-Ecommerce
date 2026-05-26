@@ -5,7 +5,7 @@ import { tokenStorage } from '../../auth/services/authService';
 
 /**
  * 404 Not Found page.
- * Matches Bella Beauty's rose/gold design tokens.
+ * Matches Oraya Beauty's rose/gold design tokens.
  * Inline styles used here intentionally — no extra CSS file needed
  * for a single-use utility page.
  */
@@ -29,7 +29,7 @@ export default function NotFound() {
         {/* Brand mark */}
         <div style={styles.brand}>
           <span style={styles.brandIco}>✦</span>
-          <span style={styles.brandName}>Bella Beauty</span>
+          <span style={styles.brandName}>Oraya Beauty</span>
         </div>
 
         {/* 404 display */}

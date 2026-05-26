@@ -5,7 +5,14 @@
   "main": "app.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon server.js",
+    "dev": "nodemon src/server.js",
+    "db:setup": "node scripts/setup-database.js",
+    "db:seed": "node scripts/seed-admin.js",
+    "db:migrate-admin-email": "node scripts/migrate-admin-email.js",
+    "db:seed:services": "node scripts/seed-services.js",
+    "db:seed:content": "node scripts/seed-content.js",
+    "test:services": "node scripts/test-services-bookings.js",
+    "whatsapp:test": "node scripts/test-whatsapp-otp.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,6 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1020.0",
+    "@aws-sdk/lib-dynamodb": "^3.1048.0",
     "aws-sdk": "^2.1693.0",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",

@@ -1,12 +1,12 @@
-const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const env = require('./env');
 
 const client = new DynamoDBClient({
-  region: "local",
-  endpoint: "http://localhost:8000",
-
+  region: env.dynamoRegion,
+  endpoint: env.dynamoEndpoint,
   credentials: {
-    accessKeyId: "fakeMyKeyId",
-    secretAccessKey: "fakeSecretAccessKey",
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'local',
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || 'local',
   },
 });
 

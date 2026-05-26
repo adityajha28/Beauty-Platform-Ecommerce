@@ -4,6 +4,25 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Cross-cutting "operations paused" disabled state.
+   Specific buttons opt-in by adding the `.disabled` class. */
+.qc-add-btn.disabled,
+.svc-add.disabled,
+.svc-cta.disabled,
+.qv-add-btn.disabled,
+.sh-btn-book.disabled,
+.app-prod-add-btn.disabled {
+  background: #e5e7eb !important;
+  color: #94a3b8 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  filter: grayscale(0.2);
+}
+
+button[disabled] {
+  cursor: not-allowed;
+}
+
 body {
   overflow-x: hidden;
   background: var(--cream);

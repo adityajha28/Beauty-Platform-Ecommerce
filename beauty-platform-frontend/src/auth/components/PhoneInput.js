@@ -1,58 +1,72 @@
 // src/auth/components/PhoneInput.js
-import React from 'react';
+import React from "react";
 
 const COUNTRY_CODES = [
-  { code: '+91', flag: '🇮🇳', label: '🇮🇳 +91' },
-  { code: '+1',  flag: '🇺🇸', label: '🇺🇸 +1'  },
-  { code: '+44', flag: '🇬🇧', label: '🇬🇧 +44' },
-  { code: '+971',flag: '🇦🇪', label: '🇦🇪 +971'},
+  { code: "+91", flag: "🇮🇳", label: "🇮🇳 +91" },
+  { code: "+1", flag: "🇺🇸", label: "🇺🇸 +1" },
+  { code: "+44", flag: "🇬🇧", label: "🇬🇧 +44" },
+  { code: "+971", flag: "🇦🇪", label: "🇦🇪 +971" },
 ];
 
-/**
- * Phone number input with country code selector.
- *
- * Props:
- *  countryCode    string  e.g. '+91'
- *  onCountryCode  (code) => void
- *  phone          string
- *  onPhone        (val) => void
- *  delay          number  animation delay index
- */
+/** Format 10 digits as "98765 43210" for readability */
+export function formatPhoneDigits(digits) {
+  const d = (digits || "").replace(/\D/g, "").slice(0, 10);
+  if (d.length <= 5) return d;
+  return `${d.slice(0, 5)} ${d.slice(5)}`;
+}
+
+export function stripPhoneDigits(value) {
+  return (value || "").replace(/\D/g, "").slice(0, 10);
+}
+
 export default function PhoneInput({
   countryCode,
   onCountryCode,
   phone,
   onPhone,
   delay = 0,
+  id = "phone-input",
 }) {
+  const display = formatPhoneDigits(phone);
+
+  const handleChange = (e) => {
+    onPhone(stripPhoneDigits(e.target.value));
+  };
+
   return (
-    <div className="field" style={{ animationDelay: `${delay * 0.05}s` }}>
-      <label>WhatsApp Number</label>
+    <div className="field phone-field" style={{ animationDelay: `${delay * 0.05}s` }}>
+      <label htmlFor={id}>WhatsApp Number</label>
       <div className="phone-row">
         <select
           className="country-select"
           value={countryCode}
-          onChange={e => onCountryCode(e.target.value)}
+          onChange={(e) => onCountryCode(e.target.value)}
           aria-label="Country code"
         >
-          {COUNTRY_CODES.map(c => (
-            <option key={c.code} value={c.code}>{c.label}</option>
+          {COUNTRY_CODES.map((c) => (
+            <option key={c.code} value={c.code}>
+              {c.label}
+            </option>
           ))}
         </select>
-        <div className="input-wrap" style={{ flex: 1 }}>
-          <span className="input-icon">📱</span>
+        <div className="phone-input-box">
+          <span className="phone-prefix" aria-hidden="true">
+            {countryCode}
+          </span>
           <input
-            className="auth-input"
+            id={id}
+            className="auth-input phone-input-native"
             type="tel"
             inputMode="numeric"
-            maxLength={10}
-            value={phone}
-            onChange={e => onPhone(e.target.value.replace(/\D/g, ''))}
+            maxLength={11}
+            value={display}
+            onChange={handleChange}
             placeholder="98765 43210"
-            autoComplete="tel"
+            autoComplete="tel-national"
           />
         </div>
       </div>
+      <p className="phone-hint">Enter your 10-digit WhatsApp number</p>
     </div>
   );
 }

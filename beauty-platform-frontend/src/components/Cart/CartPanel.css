@@ -23,6 +23,75 @@
 }
 .cp-panel.is-open { transform: translateX(0); }
 
+/* Tabs — separate product / service carts */
+.cp-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.cp-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem 0.5rem;
+  border: none;
+  border-radius: 12px;
+  background: var(--off, #f8fafc);
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.cp-tab.active {
+  background: var(--r-xl);
+  color: var(--r);
+  box-shadow: inset 0 0 0 1px rgba(192, 57, 90, 0.15);
+}
+
+.cp-tab-badge {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 100px;
+  background: var(--r);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  line-height: 18px;
+}
+
+.cp-tab:not(.active) .cp-tab-badge {
+  background: #64748b;
+}
+
+.cp-other-cart-hint {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  background: var(--r-xl);
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.cp-link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  color: var(--r);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 /* Header */
 .cp-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 1px solid rgba(0,0,0,0.05); }
 .cp-title { font-family: var(--serif); font-size: 1.5rem; color: var(--ink); font-weight: 800; margin: 0; }

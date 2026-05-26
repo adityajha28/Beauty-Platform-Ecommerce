@@ -1,6 +1,8 @@
 // src/auth/layout/DecoPanel.js
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
+import BrandLogo from '../../components/BrandLogo/BrandLogo';
+import { BRAND_TAGLINE } from '../../constants/brand';
 
 /* ─── CONTENT CONFIG PER MODE ─── */
 const DECO_CONTENT = {
@@ -19,7 +21,7 @@ const DECO_CONTENT = {
     badgeClass:   'admin',
     badgeText:    'Admin Panel',
     headline:     <>Manage the <br /><span>entire platform.</span></>,
-    sub:          'Access the Bella Beauty admin dashboard — bookings, services, products, users and analytics in one place.',
+    sub:          'Access the Oraya Beauty admin dashboard — bookings, services, products, users and analytics in one place.',
     features: [
       { ico: '📊', text: 'Full platform analytics & KPIs' },
       { ico: '📅', text: 'Manage all bookings and experts' },
@@ -52,11 +54,8 @@ export default function DecoPanel() {
 
       {/* Brand */}
       <div className="deco-brand">
-        <div className="deco-icon" aria-hidden="true">✦</div>
-        <div className="deco-name">
-          Bella <em>Beauty</em>
-        </div>
-        <div className="deco-tagline">Nagpur's finest at your doorstep</div>
+        <BrandLogo to={null} size="lg" className="deco-brand-logo" />
+        <div className="deco-tagline">{BRAND_TAGLINE}</div>
       </div>
 
       {/* Mode badge — re-mounts on mode change to replay animation */}
@@ -87,7 +86,7 @@ export default function DecoPanel() {
 
       {/* Bottom copyright */}
       <div className="deco-bottom">
-        © {new Date().getFullYear()} Bella Beauty · Nagpur, Maharashtra
+        © {new Date().getFullYear()} Oraya Beauty · Nagpur, Maharashtra
       </div>
     </aside>
   );

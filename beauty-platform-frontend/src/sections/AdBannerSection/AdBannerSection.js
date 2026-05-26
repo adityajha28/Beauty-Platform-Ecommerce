@@ -1,5 +1,6 @@
 // src/sections/AdBannerSection/AdBannerSection.js
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import "./AdBannerSection.css";
 
@@ -9,68 +10,103 @@ const IcoSparkle = () => (
   </svg>
 );
 
-export default function AdBannerSection() {
+const DEFAULT_BANNERS = [
+  {
+    id: "mk_default",
+    title: "Flawless Party Makeup",
+    subtitle: "At-home artists · Nagpur",
+    badge: "Signature Service",
+    description: "Book our elite makeup artists for your next big event.",
+    image: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1400",
+    ctaLabel: "Book Appointment",
+    link: "/services?category=Makeup",
+  },
+];
+
+export default function AdBannerSection({ banners = [] }) {
   const navigate = useNavigate();
+  const slides = banners.length >= 1 ? banners.filter((b) => b.isActive !== false) : DEFAULT_BANNERS;
+  const [index, setIndex] = useState(0);
+  const current = slides[index] || slides[0];
+
+  useEffect(() => {
+    if (slides.length <= 1) return undefined;
+    const t = setInterval(() => setIndex((i) => (i + 1) % slides.length), 6000);
+    return () => clearInterval(t);
+  }, [slides.length]);
+
+  if (!current) return null;
+
+  const go = () => navigate(current.link || "/services");
 
   return (
     <section className="ad-sec app-container">
-      <motion.div 
-        className="ad-banner-card"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
-        onClick={() => navigate("/services?category=Makeup")}
-      >
-        
-        {/* Animated Background Image */}
-        <div className="ad-bg">
-          {/* Using a highly relatable, stunning makeup portrait */}
-          <motion.img 
-            src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1400&auto=format&fit=crop" 
-            alt="Luxury Party Makeup" 
-            loading="eager" 
-            animate={{ scale: [1, 1.08, 1] }}
-            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          />
-          <div className="ad-overlay" />
-        </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current.id || index}
+          className="ad-banner-card"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.6 }}
+          onClick={go}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              go();
+            }
+          }}
+        >
+          <div className="ad-bg">
+            <motion.img
+              src={current.image}
+              alt={current.title}
+              loading="eager"
+              animate={{ scale: [1, 1.08, 1] }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            />
+            <div className="ad-overlay" />
+          </div>
 
-        {/* Floating Animated Sparkles */}
-        <motion.div className="ad-sparkle ad-sp-1" animate={{ y: [0, -12, 0], opacity: [0.4, 1, 0.4], rotate: [0, 15, 0] }} transition={{ duration: 3.5, repeat: Infinity }}><IcoSparkle /></motion.div>
-        <motion.div className="ad-sparkle ad-sp-2" animate={{ y: [0, 15, 0], opacity: [0.2, 0.9, 0.2], rotate: [0, -15, 0] }} transition={{ duration: 4.5, repeat: Infinity, delay: 1 }}><IcoSparkle /></motion.div>
+          <motion.div className="ad-sparkle ad-sp-1" animate={{ y: [0, -12, 0], opacity: [0.4, 1, 0.4] }} transition={{ duration: 3.5, repeat: Infinity }}><IcoSparkle /></motion.div>
+          <motion.div className="ad-sparkle ad-sp-2" animate={{ y: [0, 15, 0], opacity: [0.2, 0.9, 0.2] }} transition={{ duration: 4.5, repeat: Infinity, delay: 1 }}><IcoSparkle /></motion.div>
 
-        {/* Glassmorphism Content Box */}
-        <div className="ad-glass-content">
-          <motion.span 
-            className="ad-badge"
-            initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-          >
-            Signature Service
-          </motion.span>
-          
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}
-          >
-            Flawless Party <em>Makeup</em>
-          </motion.h2>
-          
-          <motion.p
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
-          >
-            Book our elite makeup artists for your next big event. Look stunning, feel unstoppable.
-          </motion.p>
-          
-          <motion.button 
-            className="ad-btn-glow"
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.5 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Book Appointment <span className="btn-arrow">→</span>
-          </motion.button>
-        </div>
+          <div className="ad-glass-content">
+            {current.badge && <span className="ad-badge">{current.badge}</span>}
+            <h2>
+              {current.title?.includes("<em>") ? (
+                <span dangerouslySetInnerHTML={{ __html: current.title }} />
+              ) : (
+                <>
+                  {current.title?.split(" ").slice(0, -1).join(" ")}{" "}
+                  <em>{current.title?.split(" ").slice(-1)}</em>
+                </>
+              )}
+            </h2>
+            {current.subtitle && <p className="ad-subtitle">{current.subtitle}</p>}
+            <p>{current.description}</p>
+            <motion.button type="button" className="ad-btn-glow" whileTap={{ scale: 0.95 }}>
+              {current.ctaLabel || "Book Now"} <span className="btn-arrow">→</span>
+            </motion.button>
+          </div>
 
-      </motion.div>
+          {slides.length > 1 && (
+            <motion.div className="ad-dots" role="tablist" aria-label="Makeup banners">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className={`ad-dot${i === index ? " active" : ""}`}
+                  aria-selected={i === index}
+                  onClick={(e) => { e.stopPropagation(); setIndex(i); }}
+                />
+              ))}
+            </motion.div>
+          )}
+        </motion.div>
+      </AnimatePresence>
     </section>
   );
 }

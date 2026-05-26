@@ -1,5 +1,5 @@
 // src/auth/pages/AdminAuthPage.js
-import React, { useCallback } from 'react';
+import React, { useCallback, useSyncExternalStore } from 'react';
 import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 
 import '../styles/auth.css';
@@ -51,8 +51,20 @@ function AdminRouter() {
   );
 }
 
+function subscribeToAuthStorage(onStoreChange) {
+  const handler = () => onStoreChange();
+  window.addEventListener('oraya-auth-changed', handler);
+  return () => window.removeEventListener('oraya-auth-changed', handler);
+}
+
+function getAuthSnapshot() {
+  return `${tokenStorage.getAccess() || ''}|${tokenStorage.getRole() || ''}`;
+}
+
 export default function AdminAuthPage() {
   const location = useLocation();
+  useSyncExternalStore(subscribeToAuthStorage, getAuthSnapshot, getAuthSnapshot);
+
   const token = tokenStorage.getAccess();
   const role = tokenStorage.getRole();
 

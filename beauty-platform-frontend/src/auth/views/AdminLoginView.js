@@ -7,11 +7,20 @@ import InputField        from '../components/InputField';
 import Checkbox          from '../components/Checkbox';
 import SubmitButton      from '../components/SubmitButton';
 import ErrorMessage      from '../components/ErrorMessage';
+import BackButton        from '../components/BackButton';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const isValidEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 
 export default function AdminLoginView() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { setView, setUserName, showToast } = useAuth();
+
+  const getRedirectTarget = () => {
+    const redirect = new URLSearchParams(location.search).get('redirect');
+    return redirect ? decodeURIComponent(redirect) : '/admin/dashboard';
+  };
 
   const [email,     setEmail]     = useState('');
   const [password,  setPassword]  = useState('');
@@ -34,27 +43,34 @@ export default function AdminLoginView() {
 
     setLoading(true);
     try {
-      const { data } = await authService.adminLogin(email, password);
+      const normalizedEmail = email.trim().toLowerCase();
+      const { data } = await authService.adminLogin(normalizedEmail, password);
 
-      /* Persist tokens */
+      if (!data?.accessToken) {
+        setError('Login succeeded but no token was returned. Check the API response.');
+        return;
+      }
+
+      /* Persist tokens (bb_* + access_token for axios) */
       tokenStorage.set(data.accessToken, data.refreshToken, 'admin');
 
-      /* Optional: store session in sessionStorage if "remember me" unchecked */
       if (!remember) {
         sessionStorage.setItem('bb_session_only', '1');
       }
 
-      if (data.user?.name) setUserName(data.user.name);
+      if (data.user?.name || data.user?.email) {
+        setUserName(data.user.name || data.user.email);
+      }
 
       showToast('Welcome back, Admin! 🔐');
-      setView('admin-success');
+      navigate(getRedirectTarget(), { replace: true });
     } catch (err) {
       const msg = err?.response?.data?.message || 'Invalid email or password. Please try again.';
       setError(msg);
     } finally {
       setLoading(false);
     }
-  }, [email, password, remember, setView, setUserName, showToast]);
+  }, [email, password, remember, setView, setUserName, showToast, navigate, location.search]);
 
   /* Enter key submit */
   const handleKeyDown = useCallback((e) => {
@@ -63,6 +79,7 @@ export default function AdminLoginView() {
 
   return (
     <FormCard animKey="admin-login">
+      <BackButton onClick={() => navigate('/')} label="Back to home" />
       <div className="card-hd">
         <div className="card-title">
           <span className="admin-title-row">
@@ -82,7 +99,7 @@ export default function AdminLoginView() {
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          placeholder="admin@bellabeauty.in"
+          placeholder="admin@orayabeauty.in"
           autoComplete="email"
           name="admin-email"
           delay={0}

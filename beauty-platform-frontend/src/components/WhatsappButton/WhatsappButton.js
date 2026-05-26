@@ -1,6 +1,7 @@
 // src/components/ui/WhatsappButton.js
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import { WHATSAPP_MESSAGE, WHATSAPP_NUMBER } from "../../constants/brand";
 import "./WhatsappButton.css";
 
 /**
@@ -8,7 +9,7 @@ import "./WhatsappButton.css";
  * @param {string} phoneNumber - Dynamic number from backend
  * @param {string} message - Pre-filled text
  */
-function WhatsappButton({ phoneNumber = "919999999999", message = "Hello Bella Beauty! I'd like to inquire about your services." }) {
+function WhatsappButton({ phoneNumber = WHATSAPP_NUMBER, message = WHATSAPP_MESSAGE, stacked = false }) {
   const [showLabel, setShowLabel] = useState(false);
 
   // Auto-show label after a short delay to grab attention
@@ -21,9 +22,9 @@ function WhatsappButton({ phoneNumber = "919999999999", message = "Hello Bella B
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   return (
-    <div className="wa-fixed-wrapper">
+    <div className={`wa-fixed-wrapper${stacked ? " wa-fixed-wrapper--stacked" : ""}`}>
       <AnimatePresence>
-        {showLabel && (
+        {showLabel && !stacked && (
           <motion.div 
             initial={{ opacity: 0, x: 20, scale: 0.8 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}

@@ -20,6 +20,39 @@
   margin: 0;
 }
 
+.cart-page-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.cart-page-tab {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  background: var(--white);
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.cart-page-tab.active {
+  background: var(--r-xl);
+  border-color: rgba(192, 57, 90, 0.25);
+  color: var(--r);
+}
+
+.cart-summary-hint {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin: 0.75rem 0 0;
+  line-height: 1.45;
+}
+
 .cart-page-card,
 .cart-summary-box {
   background: var(--white);

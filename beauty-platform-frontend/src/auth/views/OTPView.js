@@ -1,7 +1,8 @@
 // src/auth/views/OTPView.js
 import React, { useState, useCallback, useEffect } from 'react';
 import { useAuth }     from '../../context/AuthContext';
-import authService, { tokenStorage } from '../services/authService';
+import authService, { tokenStorage, AUTH_FLOW_KEY } from '../services/authService';
+import { userStorage } from '../../utils/userStorage';
 import FormCard        from '../components/FormCard';
 import BackButton      from '../components/BackButton';
 import SubmitButton    from '../components/SubmitButton';
@@ -40,7 +41,7 @@ export default function OTPView() {
     setOtp('');
     setError('');
     try {
-      await authService.sendOTP(rawPhone(phone));
+      await authService.sendOTP(rawPhone(phone), userTab === 'login' ? 'login' : 'signup');
       timer.start();
       showToast('New OTP sent via WhatsApp 💬');
     } catch {
@@ -60,23 +61,63 @@ export default function OTPView() {
     try {
       const { data } = await authService.verifyOTP(rawPhone(phone), code);
 
-      /* Store tokens */
+      const flow =
+        sessionStorage.getItem(AUTH_FLOW_KEY) ||
+        userTab ||
+        (data.isNewUser ? 'signup' : 'login');
+
+      const isSignup = flow === 'signup' || Boolean(data.isNewUser);
+      const normalizedPhone = rawPhone(phone);
+      const pendingProfile = userStorage.getProfile();
+      const resolvedName = (
+        data.user?.name ||
+        userName ||
+        pendingProfile?.name ||
+        ''
+      ).trim();
+      const resolvedEmail = pendingProfile?.email || data.user?.email || '';
+
+      userStorage.beginCustomerSession({
+        phone: normalizedPhone,
+        name: resolvedName,
+        email: resolvedEmail,
+        isNewUser: isSignup,
+        resetLocal: isSignup || Boolean(data.isNewUser),
+      });
+
+      /* Store tokens (notifies app to refresh user display) */
       tokenStorage.set(data.accessToken, data.refreshToken, 'customer');
 
-      /* If this is a signup and backend returns isNewUser, complete profile */
-      if (userTab === 'signup' && data.isNewUser && userName) {
+      /* Login: skip onboarding. Signup: profile + address flow */
+      if (isSignup) {
+        userStorage.setOnboardingDone(false);
+        sessionStorage.setItem(AUTH_FLOW_KEY, 'signup');
+      } else {
+        userStorage.setIsNewUser(false);
+        userStorage.setOnboardingDone(true);
+        sessionStorage.setItem(AUTH_FLOW_KEY, 'login');
+      }
+
+      if (resolvedName) setUserName(resolvedName);
+
+      /* Persist signup name/email to backend when available */
+      if (isSignup && resolvedName) {
         try {
-          await authService.completeProfile(rawPhone(phone), userName, '');
+          await authService.completeProfile(
+            normalizedPhone,
+            resolvedName,
+            resolvedEmail
+          );
         } catch {
           /* profile can be completed later — non-blocking */
         }
+      } else if (!isSignup && data.user?.name) {
+        userStorage.setUserName(data.user.name);
+        setUserName(data.user.name);
       }
 
-      /* Update display name from backend if available */
-      if (data.user?.name) setUserName(data.user.name);
-
       timer.reset();
-      showToast('Welcome to Bella Beauty! 🌸');
+      showToast('Welcome to Oraya Beauty! 🌸');
       setView('success');
     } catch (err) {
       const msg = err?.response?.data?.message || 'Incorrect OTP. Please try again.';

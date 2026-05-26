@@ -48,8 +48,16 @@ const TABS = [
   { path: "/services", id: "services", label: "Services", Icon: IcoServices },
   { path: "/products", id: "shop", label: "Shop", Icon: IcoShop },
   { path: "/cart", id: "cart", label: "Cart", Icon: IcoCart },
-  { path: "/profile", id: "profile", label: "Profile", Icon: IcoProfile },
+  { path: "/account", id: "profile", label: "Profile", Icon: IcoProfile },
 ];
+
+function isTabActive(tab, pathname) {
+  if (tab.id === "profile") {
+    return pathname === "/account" || pathname.startsWith("/profile");
+  }
+  if (tab.path === "/") return pathname === "/";
+  return pathname === tab.path || pathname.startsWith(`${tab.path}/`);
+}
 
 export default function BottomNav() {
   const location = useLocation();
@@ -60,7 +68,7 @@ export default function BottomNav() {
     <nav className="mob-bottom-nav" aria-label="Mobile Bottom Navigation">
       <div className="mbn-container">
         {TABS.map((tab) => {
-          const isActive = location.pathname === tab.path;
+          const isActive = isTabActive(tab, location.pathname);
 
           return (
             <NavLink 

@@ -67,7 +67,10 @@ export default function MostBookedSection({ services = [] }) {
                 
                 {/* Price & Action Row */}
                 <div className="mb-price-row">
-                  <span className="mb-price">₹{service.price?.toLocaleString()}</span>
+                  <span className="mb-price">
+                    <span className="mb-price-currency">₹</span>
+                    <span className="mb-price-amount">{service.price?.toLocaleString("en-IN")}</span>
+                  </span>
                   <button 
                     className="mb-add-btn"
                     onClick={(e) => {

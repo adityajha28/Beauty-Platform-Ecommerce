@@ -2,54 +2,57 @@
 import { useEffect, useState, useMemo } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 
 /* ─── GLOBAL CONTEXT ─── */
-import { useCart } from "../../context/CartContext"; 
+import { useCart } from "../../context/CartContext";
+import { useWishlist } from "../../context/WishlistContext";
 import toast from "react-hot-toast";
 
-/* ─── GLOBAL COMPONENTS ─── */
 import Navbar from "../../components/Navbar/Navbar";
 import BottomNav from "../../components/BottomNav/BottomNav";
 import CartPanel from "../../components/Cart/CartPanel";
+import FloatingCartFab from "../../components/FloatingCartFab/FloatingCartFab";
 import FilterDrawer from "../../components/drawers/FilterDrawer";
-
+import BrandLogo from "../../components/BrandLogo/BrandLogo";
+import OperationsNotice from "../../components/OperationsNotice/OperationsNotice";
+import useOperationsStatus from "../../hooks/useOperationsStatus";
+import {
+  fetchProductCategories,
+  fetchProducts,
+  searchProducts,
+} from "../../services/productsCatalogService";
+import "./Products.css";
 /* ─── ICONS ─── */
 const IcoSearch = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
 const IcoHeart = ({ filled }) => <svg viewBox="0 0 24 24" fill={filled ? "#16a34a" : "none"} stroke={filled ? "#16a34a" : "#c0c0c0"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>;
 const IcoFilter = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>;
 const IcoSort = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>;
 const IcoDown = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>;
-const IcoArrowRight = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>;
 const IcoStar = () => <svg viewBox="0 0 24 24" fill="#F59E0B" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>;
 const IcoClose = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
 
-import "./Products.css";
+
 
 const ITEMS_PER_PAGE = 12;
 
-const CATEGORIES = [
-  { name: "Top Deals", icon: "✨" },
-  { name: "Skincare", icon: "🧴" },
-  { name: "Haircare", icon: "💆‍♀️" },
-  { name: "Cosmetics", icon: "💄" },
-  { name: "Tools", icon: "✂️" },
-  { name: "Fragrance", icon: "🌸" },
-  { name: "Wellness", icon: "🌿" }
-];
-
 export default function Products() {
-  const navigate = useNavigate();
   
   // ✅ Connected to Global Cart Context
-  const { cart, addToCart } = useCart(); 
-  const totalCartItems = cart?.reduce((acc, item) => acc + (item.quantity || 1), 0) || 0;
+  const { productItems, addToCart, productCount, productSubtotal, setCartOpen, setCartType } = useCart();
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const ops = useOperationsStatus();
+  const ordersPaused = ops.productsOpen === false;
 
+  useEffect(() => {
+    setCartType("product");
+  }, [setCartType]);
+
+  const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   
   // UI & Filter State
-  const [activeCategory, setActiveCategory] = useState("Top Deals");
+  const [activeCategory, setActiveCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortBy, setSortBy] = useState("popular");
@@ -60,37 +63,72 @@ export default function Products() {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
-    loadProducts();
+    (async () => {
+      const cats = await fetchProductCategories();
+      const withDeals = [{ name: "Top Deals", icon: "✨", id: "top-deals" }, ...cats.map((c) => ({
+        name: c.name,
+        icon: "✨",
+        id: c.id,
+        image: c.image,
+      }))];
+      setCategories(withDeals);
+      if (withDeals.length) setActiveCategory(withDeals[0].name);
+    })();
   }, []);
 
-  const loadProducts = async () => {
-    try {
-      const data = Array.from({ length: 50 }, (_, i) => ({
-        id: i + 1,
-        name: `Premium Beauty Formula ${i + 1} - Flawless Radiance`,
-        category: CATEGORIES[(i % 6) + 1].name,
-        price: 899 + (i * 50),
-        originalPrice: 1299 + (i * 50),
-        rating: 4.0 + (i % 5) * 0.2,
-        reviewCount: 168 + i * 12,
-        image: `https://images.unsplash.com/photo-${1556228578 + (i % 5)}?q=80&w=400&auto=format&fit=crop`,
-        tag: i % 3 === 0 ? "15 MINS" : "EXPRESS",
-        discount: Math.round((1 - (899 + i * 50) / (1299 + i * 50)) * 100),
-        description: "Experience ultimate luxury with this advanced formula designed to rejuvenate and enhance your natural beauty. Dermatologist tested, cruelty-free, and crafted with premium botanical extracts for visible results."
-      }));
-
-      const topDeals = data.slice(0, 10).map(p => ({ ...p, id: p.id + 100, category: "Top Deals", discount: 45, price: Math.floor(p.price * 0.7) }));
-      setProducts([...topDeals, ...data]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    if (!activeCategory) return;
+    let cancelled = false;
+    const timer = setTimeout(async () => {
+      setLoading(true);
+      try {
+        const q = searchQuery.trim();
+        let list = [];
+        if (q.length >= 2) {
+          list = await searchProducts(q);
+        } else if (activeCategory === "Top Deals") {
+          const all = await fetchProducts();
+          list = all.slice(0, 12).map((p) => ({
+            ...p,
+            originalPrice: Math.round(p.price * 1.3),
+            discount: 30,
+            category: "Top Deals",
+          }));
+        } else {
+          list = await fetchProducts(activeCategory);
+        }
+        if (!cancelled) {
+          setProducts(
+            list.map((p) => ({
+              ...p,
+              originalPrice: p.originalPrice || Math.round(p.price * 1.25),
+              rating: p.rating || 4.8,
+              reviewCount: p.reviewCount || 100,
+              discount: p.discount || Math.round((1 - p.price / (p.originalPrice || p.price * 1.25)) * 100),
+              description: p.description || "",
+            }))
+          );
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }, searchQuery.trim().length >= 2 ? 300 : 0);
+    return () => { cancelled = true; clearTimeout(timer); };
+  }, [activeCategory, searchQuery]);
 
   const handleAddToCart = (e, product) => {
-    e.stopPropagation(); 
-    addToCart(product);
-    toast.success(`${product.name} added to cart!`);
-    if(selectedProduct) setSelectedProduct(null); 
+    e.stopPropagation();
+    if (ordersPaused) {
+      toast.error(
+        ops.productMessage || "Product orders are temporarily paused."
+      );
+      return;
+    }
+    const added = addToCart(product, "product");
+    if (added !== false) {
+      toast.success(`${product.name} added to cart!`);
+      if (selectedProduct) setSelectedProduct(null);
+    }
   };
 
   // Cross-Filtering Logic
@@ -136,7 +174,7 @@ export default function Products() {
         {/* ─── LEFT SIDEBAR (Always vertical on all devices) ─── */}
         <aside className="qc-sidebar">
           <div className="qc-sidebar-inner">
-            {CATEGORIES.map(cat => (
+            {categories.map(cat => (
               <button
                 key={cat.name}
                 className={`qc-cat-btn ${activeCategory === cat.name ? "active" : ""}`}
@@ -153,10 +191,15 @@ export default function Products() {
         {/* ─── RIGHT PANE (Products & Filters) ─── */}
         <main className="qc-main" id="qc-main-scroll">
           
+          <OperationsNotice scope="products" />
+
           <div className="qc-sticky-header">
-            <div className="qc-header-row">
-              <h1 className="qc-page-title">{activeCategory}</h1>
-              <span className="qc-loc">Delivering to: <strong>Nagpur, MH</strong> <IcoDown/></span>
+            <div className="qc-brand-row">
+              <BrandLogo to="/" size="sm" className="qc-brand" showText={false} />
+              <div className="qc-header-titles">
+                <h1 className="qc-page-title">{activeCategory}</h1>
+                <span className="qc-loc">Delivering to: <strong>Nagpur, MH</strong> <IcoDown/></span>
+              </div>
             </div>
 
             {/* Native Search Bar */}
@@ -207,7 +250,18 @@ export default function Products() {
                       >
                         <div className="qc-img-wrap">
                           <img src={product.image} alt={product.name} loading="lazy" />
-                          <button className="qc-heart" onClick={(e) => { e.stopPropagation(); toast.success("Added to Wishlist"); }}><IcoHeart filled={false} /></button>
+                          <button
+                            type="button"
+                            className={`qc-heart${isInWishlist(product.id) ? " active" : ""}`}
+                            onClick={async (e) => {
+                              e.stopPropagation();
+                              const added = await toggleWishlist(product);
+                              toast.success(added ? "Saved to wishlist" : "Removed from wishlist");
+                            }}
+                            aria-label={isInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+                          >
+                            <IcoHeart filled={isInWishlist(product.id)} />
+                          </button>
                         </div>
                         
                         <div className="qc-body">
@@ -229,12 +283,15 @@ export default function Products() {
                           </div>
                           
                           {/* ✅ App-style ADD button */}
-                          <motion.button 
-                            className="qc-add-btn" 
-                            whileTap={{ scale: 0.92 }}
+                          <motion.button
+                            className={`qc-add-btn${ordersPaused ? " disabled" : ""}`}
+                            whileTap={{ scale: ordersPaused ? 1 : 0.92 }}
                             onClick={(e) => handleAddToCart(e, product)}
+                            disabled={ordersPaused}
+                            aria-disabled={ordersPaused}
+                            title={ordersPaused ? ops.productMessage : "Add to cart"}
                           >
-                            ADD
+                            {ordersPaused ? "UNAVAILABLE" : "ADD"}
                           </motion.button>
                         </div>
                       </motion.div>
@@ -256,31 +313,19 @@ export default function Products() {
           </div>
         </main>
 
-        {/* ─── FLOATING VIEW CART BUTTON (Reference Match) ─── */}
-        <AnimatePresence>
-          {totalCartItems > 0 && (
-            <motion.div 
-              className="qc-floating-cart-wrapper"
-              initial={{ y: 150, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 150, opacity: 0 }}
-              onClick={() => navigate("/cart")}
-            >
-              <div className="qc-floating-cart">
-                <div className="fc-left">
-                  <div className="fc-img-stack">
-                    <img src={cart[0]?.image || "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=100"} alt="Cart" />
-                  </div>
-                  <div className="fc-text">
-                    <span className="fc-title">View cart</span>
-                    <span className="fc-count">{totalCartItems} Item{totalCartItems > 1 ? 's' : ''}</span>
-                  </div>
-                </div>
-                <div className="fc-arrow"><IcoArrowRight /></div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+
+      <FloatingCartFab
+        className="floating-cart-fab--products"
+        itemCount={productCount}
+        previewImage={productItems[0]?.image}
+        subtotal={productSubtotal}
+        onClick={() => {
+          setCartType("product");
+          setCartOpen(true);
+        }}
+        label="View cart"
+      />
+
 
       </div>
 
@@ -322,8 +367,15 @@ export default function Products() {
               </div>
 
               <div className="qv-footer">
-                <motion.button className="qv-add-btn" whileTap={{ scale: 0.95 }} onClick={(e) => handleAddToCart(e, selectedProduct)}>
-                  Add to Cart — ₹{selectedProduct.price}
+                <motion.button
+                  className={`qv-add-btn${ordersPaused ? " disabled" : ""}`}
+                  whileTap={{ scale: ordersPaused ? 1 : 0.95 }}
+                  onClick={(e) => handleAddToCart(e, selectedProduct)}
+                  disabled={ordersPaused}
+                >
+                  {ordersPaused
+                    ? "Currently unavailable"
+                    : `Add to Cart — ₹${selectedProduct.price}`}
                 </motion.button>
               </div>
             </motion.div>

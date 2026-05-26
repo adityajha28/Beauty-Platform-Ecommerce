@@ -27,9 +27,14 @@ export default function AdminRoute({ children }) {
     );
   }
 
-  /* Logged in as customer trying to reach admin panel */
+  /* Logged in as customer (or unknown role) — send to admin login, not user home */
   if (role !== 'admin') {
-    return <Navigate to="/" replace />;
+    return (
+      <Navigate
+        to={`/admin/login?redirect=${encodeURIComponent(location.pathname)}`}
+        replace
+      />
+    );
   }
 
   return children;

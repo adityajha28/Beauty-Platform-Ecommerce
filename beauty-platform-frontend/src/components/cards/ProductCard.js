@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addWishlist, removeWishlist } from "../../store/wishlistSlice"; 
 import toast from "react-hot-toast";
 import ProductRating from "../ratings/ProductRating"; // Assuming this exists
+import useOperationsStatus from "../../hooks/useOperationsStatus";
 import "./ProductCard.css";
 
 /* ─── ICONS ─── */
@@ -26,6 +27,8 @@ function ProductCard({ product }) {
   const { addToCart } = useCart();
   const dispatch = useDispatch();
   const [isAdding, setIsAdding] = useState(false);
+  const ops = useOperationsStatus();
+  const ordersPaused = ops.productsOpen === false;
 
   // Backend readiness
   const wishlistItems = useSelector((state) => state.wishlist?.items) || [];
@@ -33,10 +36,14 @@ function ProductCard({ product }) {
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
+    if (ordersPaused) {
+      toast.error(ops.productMessage || "Product orders are temporarily paused.");
+      return;
+    }
     setIsAdding(true);
     await new Promise(r => setTimeout(r, 400)); // Mock API delay
-    addToCart(product);
-    toast.success(`${product.name} added to cart!`);
+    const ok = addToCart(product, "product");
+    if (ok !== false) toast.success(`${product.name} added to cart!`);
     setIsAdding(false);
   };
 
@@ -85,14 +92,15 @@ function ProductCard({ product }) {
         <div className="app-prod-footer">
           <span className="app-prod-price">₹{product.price?.toLocaleString()}</span>
           
-          <motion.button 
-            whileTap={{ scale: 0.9 }} 
-            className={`app-prod-add-btn ${isAdding ? "loading" : ""}`} 
+          <motion.button
+            whileTap={{ scale: ordersPaused ? 1 : 0.9 }}
+            className={`app-prod-add-btn ${isAdding ? "loading" : ""}${ordersPaused ? " disabled" : ""}`}
             onClick={handleAddToCart}
-            disabled={isAdding}
-            aria-label="Add to cart"
+            disabled={isAdding || ordersPaused}
+            aria-label={ordersPaused ? "Unavailable" : "Add to cart"}
+            title={ordersPaused ? ops.productMessage : "Add to cart"}
           >
-            {isAdding ? "..." : <IcoCartAdd />}
+            {isAdding ? "..." : ordersPaused ? "—" : <IcoCartAdd />}
           </motion.button>
         </div>
       </div>

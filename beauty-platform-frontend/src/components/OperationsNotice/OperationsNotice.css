@@ -1,0 +1,60 @@
+.ops-notice-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem 0;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.ops-notice-stack.compact {
+  padding: 0;
+}
+
+.ops-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.7rem 0.95rem;
+  border-radius: 10px;
+  font-size: 0.86rem;
+  line-height: 1.4;
+  border: 1px solid transparent;
+}
+
+.ops-notice-ico {
+  font-size: 1rem;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.ops-notice.info {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.ops-notice.warn {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.ops-notice strong {
+  font-weight: 700;
+}
+
+.ops-notice-stack.compact .ops-notice {
+  font-size: 0.78rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  .ops-notice-stack {
+    padding: 0.5rem 0.75rem 0;
+  }
+  .ops-notice {
+    font-size: 0.8rem;
+  }
+}

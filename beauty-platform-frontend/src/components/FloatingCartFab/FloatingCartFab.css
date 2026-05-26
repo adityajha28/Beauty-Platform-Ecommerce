@@ -1,0 +1,121 @@
+/* Amazon-style centered floating cart */
+
+.floating-cart-fab {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  z-index: 850;
+
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: min(92vw, 360px);
+  max-width: 400px;
+  padding: 0.5rem 0.85rem 0.5rem 0.5rem;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #1a7f37, #15803d);
+  color: #fff;
+  box-shadow:
+    0 12px 32px rgba(21, 128, 61, 0.42),
+    0 4px 12px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  font-family: var(--sans);
+}
+
+.fcf-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+}
+
+.fcf-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fcf-thumb-fallback {
+  color: #15803d;
+  display: grid;
+  place-items: center;
+}
+
+.fcf-thumb-fallback svg {
+  width: 20px;
+  height: 20px;
+}
+
+.fcf-text {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.fcf-label {
+  font-size: 0.92rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.fcf-meta {
+  font-size: 0.68rem;
+  font-weight: 600;
+  opacity: 0.92;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fcf-arrow {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.fcf-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Products page: center on full viewport (Amazon-style) */
+.floating-cart-fab--products {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media (min-width: 769px) {
+  .floating-cart-fab {
+    bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .floating-cart-fab--products {
+    bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 768px) {
+  /* Leave room for right edge stack (scroll + WhatsApp) */
+  .floating-cart-fab {
+    left: 12px;
+    right: 80px;
+    transform: none;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .floating-cart-fab--services {
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  }
+}

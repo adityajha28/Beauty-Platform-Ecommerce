@@ -2,6 +2,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { tokenStorage } from '../services/authService';
+import OnboardingGate from './OnboardingGate';
 
 export default function ProtectedRoute({ children }) {
   const location = useLocation();
@@ -26,5 +27,5 @@ export default function ProtectedRoute({ children }) {
     return <Navigate to="/admin/dashboard" replace />;
   }
 
-  return children;
+  return <OnboardingGate>{children}</OnboardingGate>;
 }

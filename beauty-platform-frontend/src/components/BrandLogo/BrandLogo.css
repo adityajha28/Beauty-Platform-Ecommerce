@@ -1,0 +1,139 @@
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+  max-width: 100%;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.brand-logo:hover {
+  transform: scale(1.02);
+}
+
+.brand-logo-img {
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* Square monogram — navbar & general UI */
+.brand-logo-img--sm {
+  width: 32px;
+  height: 32px;
+}
+
+.brand-logo-img--md {
+  width: 40px;
+  height: 40px;
+}
+
+.brand-logo-img--lg {
+  width: 52px;
+  height: 52px;
+}
+
+/* Horizontal lockup (footer, auth panels) */
+.brand-logo-img--horizontal {
+  width: auto;
+  height: 36px;
+  max-width: min(180px, 42vw);
+}
+
+.brand-logo-img--horizontal.brand-logo-img--sm {
+  height: 28px;
+  max-width: 140px;
+}
+
+.brand-logo-img--horizontal.brand-logo-img--lg {
+  height: 44px;
+  max-width: 200px;
+}
+
+.brand-logo-text {
+  font-family: var(--serif);
+  font-size: clamp(1.05rem, 3.2vw, 1.45rem);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.05;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+.brand-logo-text em {
+  font-style: italic;
+  color: var(--r);
+  font-weight: 700;
+}
+
+/* ── Navbar: compact, always readable on glass header ── */
+.brand-logo--nav {
+  flex-shrink: 0;
+  gap: 0.45rem;
+}
+
+.brand-logo--nav .brand-logo-img--md {
+  width: 38px;
+  height: 38px;
+}
+
+.brand-logo--nav .brand-logo-text {
+  font-size: clamp(1rem, 2.8vw, 1.35rem);
+}
+
+/* Products / services sub-headers — icon only */
+.qc-brand .brand-logo-img--sm,
+.svc-brand .brand-logo-img--sm {
+  width: 34px;
+  height: 34px;
+}
+
+/* Footer */
+.brand-logo--footer .brand-logo-img--md {
+  width: 44px;
+  height: 44px;
+}
+
+.brand-logo--footer .brand-logo-text {
+  font-size: 1.4rem;
+}
+
+/* Auth deco panel */
+.deco-brand-logo .brand-logo-img--lg {
+  width: 56px;
+  height: 56px;
+}
+
+@media (max-width: 480px) {
+  .brand-logo--nav .brand-logo-img--md {
+    width: 34px;
+    height: 34px;
+  }
+
+  .brand-logo--nav .brand-logo-text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand-logo--nav .brand-logo-text {
+    display: none;
+  }
+
+  .brand-logo--nav .brand-logo-img--md {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .brand-logo--nav .brand-logo-img--md {
+    width: 42px;
+    height: 42px;
+  }
+}

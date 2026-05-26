@@ -4,9 +4,30 @@
 .qc-layout {
   display: flex;
   height: 100dvh;
-  padding-top: 60px; /* Global Navbar Height */
+  padding-top: calc(60px + env(safe-area-inset-top, 0px));
   background: #f4f6f9;
   overflow: hidden;
+}
+
+.qc-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 10px;
+}
+
+.qc-brand .brand-logo-img {
+  width: 36px;
+  height: 36px;
+}
+
+.qc-header-titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.qc-header-row {
+  display: none;
 }
 
 /* ─── LEFT SIDEBAR (Always Vertical) ─── */
@@ -101,8 +122,28 @@
 
 .qc-img-wrap { width: 100%; aspect-ratio: 1/1; background: #f9fafb; border-radius: 12px 12px 0 0; position: relative; overflow: hidden; }
 .qc-img-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 12px; mix-blend-mode: multiply; }
-.qc-heart { position: absolute; top: 6px; right: 6px; background: rgba(255,255,255,0.9); border-radius: 50%; border: none; cursor: pointer; padding: 5px; display: grid; place-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-.qc-heart svg { width: 14px; }
+.qc-heart {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.qc-heart.active {
+  background: var(--r-xl);
+}
+
+.qc-heart svg {
+  width: 14px;
+}
 
 .qc-body { padding: 8px; display: flex; flex-direction: column; flex: 1; }
 

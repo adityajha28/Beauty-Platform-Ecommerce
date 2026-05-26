@@ -6,9 +6,13 @@ import Home     from "./pages/Home/Home";
 import Products from "./pages/Products/Products";
 import Services from "./pages/Services/Services"; // ✅ ADDED SERVICES IMPORT
 import Cart     from "./pages/Cart/Cart";
-import Checkout from "./pages/Checkout/Checkout";
+import CheckoutRouter from "./pages/Checkout/CheckoutRouter";
+import CheckoutSuccess from "./pages/Checkout/CheckoutSuccess";
 import Profile  from "./pages/Profile/Profile";
+import Onboarding from "./pages/Onboarding/Onboarding";
+import AccountMenu from "./pages/Account/AccountMenu";
 import Careers  from "./pages/Careers/Careers";
+import Wishlist from "./pages/Wishlist/Wishlist";
 
 /* ── Auth ── */
 import AuthPage from "./auth/pages/AuthPage";
@@ -25,11 +29,16 @@ import AdminServices from "./admin/pages/Services/Services";
 import AdminBookings from "./admin/pages/Bookings/Bookings";
 import AdminOrders   from "./admin/pages/Orders/Orders";
 import AdminUsers    from "./admin/pages/Users/Users";
+import AdminOffers   from "./admin/pages/Offers/Offers";
+import AdminReviews  from "./admin/pages/Reviews/Reviews";
+import AdminContent  from "./admin/pages/Content/Content";
+import AdminOperations from "./admin/pages/Operations/Operations";
+import AdminTimeSlots from "./admin/pages/TimeSlots/TimeSlots";
 
 /* ── Shared UI ── */
 import NotificationProvider from "./components/notifications/NotificationProvider";
 import PageTransition       from "./components/animations/PageTransition";
-import WhatsappButton       from "./components/WhatsappButton/WhatsappButton";
+import FloatingEdgeStack    from "./components/FloatingEdgeStack/FloatingEdgeStack";
 
 /* ── 404 ── */
 import NotFound from "./pages/NotFound/NotFound";
@@ -51,7 +60,7 @@ function App() {
 
   // Logic to hide WhatsApp on Admin and 404 pages
   // ✅ ADDED "/services" TO VALID PATHS
-  const validUserPaths = ["/", "/products", "/services", "/careers", "/auth", "/cart", "/checkout", "/profile"];
+  const validUserPaths = ["/", "/products", "/services", "/careers", "/wishlist", "/auth", "/cart", "/checkout", "/checkout/success", "/profile", "/account", "/onboarding"];
   const isAdminRoute = location.pathname.startsWith("/admin");
   const isNotFound = !validUserPaths.includes(location.pathname) && !isAdminRoute;
   const showWhatsapp = !isAdminRoute && !isNotFound;
@@ -105,6 +114,15 @@ function App() {
           }
         />
 
+        <Route
+          path="/wishlist"
+          element={
+            <PageTransition>
+              <Wishlist />
+            </PageTransition>
+          }
+        />
+
         {/* ════════════════════════
             AUTH PAGES
             /auth         → Customer login/signup
@@ -132,11 +150,44 @@ function App() {
         />
 
         <Route
+          path="/onboarding"
+          element={
+            <ProtectedRoute>
+              <PageTransition>
+                <Onboarding />
+              </PageTransition>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/account"
+          element={
+            <ProtectedRoute>
+              <PageTransition>
+                <AccountMenu />
+              </PageTransition>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/checkout"
           element={
             <ProtectedRoute>
               <PageTransition>
-                <Checkout />
+                <CheckoutRouter />
+              </PageTransition>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/checkout/success"
+          element={
+            <ProtectedRoute>
+              <PageTransition>
+                <CheckoutSuccess />
               </PageTransition>
             </ProtectedRoute>
           }
@@ -214,6 +265,51 @@ function App() {
           }
         />
 
+        <Route
+          path="/admin/offers"
+          element={
+            <AdminRoute>
+              <AdminOffers />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin/reviews"
+          element={
+            <AdminRoute>
+              <AdminReviews />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin/content"
+          element={
+            <AdminRoute>
+              <AdminContent />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin/operations"
+          element={
+            <AdminRoute>
+              <AdminOperations />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path="/admin/time-slots"
+          element={
+            <AdminRoute>
+              <AdminTimeSlots />
+            </AdminRoute>
+          }
+        />
+
         {/* ════════════════════════
             404 CATCH-ALL
             Must always be last.
@@ -224,7 +320,7 @@ function App() {
       </Routes>
 
       {/* RENDER CONDITIONALLY */}
-      {showWhatsapp && <WhatsappButton />}
+      {showWhatsapp && <FloatingEdgeStack />}
     </>
   );
 }

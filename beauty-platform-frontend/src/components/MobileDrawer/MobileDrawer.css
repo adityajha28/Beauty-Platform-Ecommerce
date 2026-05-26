@@ -26,8 +26,14 @@
 .md-panel--open { transform: translateX(0); animation: md-slideIn 0.6s var(--spring-heavy) both; }
 
 .md-header { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem; background: var(--off); border-bottom: 1px solid rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 2; }
-.md-brand { font-family: var(--serif); font-size: 1.4rem; font-weight: 800; color: var(--ink); display: flex; align-items: center; gap: 0.4rem; }
-.md-brand-gem { color: var(--r); }
+.md-brand.brand-logo {
+  text-decoration: none;
+  min-width: 0;
+}
+
+.md-brand .brand-logo-text {
+  font-size: 1.2rem;
+}
 .md-close { width: 38px; height: 38px; border-radius: 50%; background: #fff; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: 0.3s var(--spring-heavy); }
 .md-close:active { transform: scale(0.85); }
 .md-close span { width: 16px; height: 2px; background: var(--ink); position: absolute; }
@@ -41,7 +47,41 @@
 .md-btn-signup { background: linear-gradient(135deg, var(--r), var(--r-d)); color: white; border: none; box-shadow: 0 4px 15px rgba(192,57,90,0.3); }
 .md-btn-signup:active { transform: scale(0.95); box-shadow: 0 2px 8px rgba(192,57,90,0.3); }
 
-.md-profile { display: flex; align-items: center; gap: 1rem; padding: 1.2rem; background: var(--off); border-bottom: 1px solid rgba(0,0,0,0.05); }
+.md-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem 1.2rem;
+  background: var(--off);
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.md-profile--tap:active {
+  background: var(--r-xl);
+}
+
+.md-profile-chevron {
+  font-size: 1.5rem;
+  color: var(--pale);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.md-nav-block {
+  padding: 0.25rem 0 0.5rem;
+}
+
+.md-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  padding: 0 1rem 0.5rem;
+}
 .md-profile-av { width: 50px; height: 50px; border-radius: 16px; display: grid; place-items: center; color: white; font-weight: 800; font-family: var(--serif); font-size: 1.2rem; position: relative; }
 .md-av-customer { background: linear-gradient(135deg, var(--r), #e0708a); box-shadow: 0 4px 12px rgba(192,57,90,0.3); }
 .md-av-admin { background: linear-gradient(135deg, var(--gold), #9b6e3e); box-shadow: 0 4px 12px rgba(191,140,90,0.3); }
@@ -49,8 +89,21 @@
 .md-profile-role { font-size: 0.75rem; color: var(--muted); font-weight: 600; margin-top: 2px; }
 .md-role-admin { color: var(--gold); }
 
-.md-section-label { font-size: 0.65rem; font-weight: 800; color: var(--pale); letter-spacing: 0.15em; text-transform: uppercase; padding: 1rem 1.2rem 0.2rem; }
-.md-nav-list { list-style: none; padding: 0.4rem 0.6rem; }
+.md-section-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--pale);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.2rem 0.35rem;
+  margin: 0;
+}
+
+.md-nav-list {
+  list-style: none;
+  padding: 0 0.6rem 0.5rem;
+  margin: 0;
+}
 .md-nav-item { animation: md-linkIn 0.5s var(--spring-heavy) both; }
 .md-link { display: flex; align-items: center; padding: 0.8rem; border-radius: 14px; text-decoration: none; color: var(--ink); font-weight: 600; transition: 0.3s var(--ease-smooth); margin-bottom: 4px; }
 .md-link:active { transform: scale(0.97); background: var(--off); }
@@ -61,7 +114,10 @@
 .md-link-arrow { color: var(--pale); font-size: 1.4rem; transition: 0.3s; }
 .md-link--active .md-link-arrow { color: var(--r); transform: translateX(4px); }
 
-.md-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; padding: 1.2rem; border-top: 1px solid rgba(0,0,0,0.05); }
+.md-quick {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: 0.25rem;
+}
 .md-qcard { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 0.8rem 0.2rem; border-radius: 16px; background: #fff; border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 4px 12px rgba(0,0,0,0.03); cursor: pointer; text-decoration: none; transition: 0.4s var(--spring-heavy); animation: md-qcardIn 0.6s var(--spring-heavy) both; }
 .md-qcard:nth-child(1) { animation-delay: 0.2s; } .md-qcard:nth-child(2) { animation-delay: 0.3s; } .md-qcard:nth-child(3) { animation-delay: 0.4s; } .md-qcard:nth-child(4) { animation-delay: 0.5s; }
 .md-qcard:active { transform: scale(0.9) translateY(4px); box-shadow: 0 0 0 transparent; }

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="Oraya Beauty">
+  <defs>
+    <linearGradient id="ob-rose" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C0395A"/>
+      <stop offset="1" stop-color="#962C46"/>
+    </linearGradient>
+    <linearGradient id="ob-gold" x1="40" y1="16" x2="52" y2="28" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D4A574"/>
+      <stop offset="1" stop-color="#BF8C5A"/>
+    </linearGradient>
+    <filter id="ob-soft" x="-8%" y="-8%" width="116%" height="116%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1.2" flood-color="#C0395A" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <g filter="url(#ob-soft)">
+    <circle cx="32" cy="32" r="29" fill="#FDF8F6" stroke="url(#ob-rose)" stroke-width="2.25"/>
+    <path
+      d="M24.5 32c0-5.8 3.4-10.5 7.5-10.5s7.5 4.7 7.5 10.5-3.4 10.5-7.5 10.5-7.5-4.7-7.5-10.5z"
+      stroke="url(#ob-rose)"
+      stroke-width="2.4"
+      stroke-linecap="round"
+    />
+    <path
+      d="M37.5 24.5c3.2 0 5.8 2.4 5.8 5.5 0 2.4-1.4 4.4-3.5 5.2v.1c2.8.7 4.7 3 4.7 5.7 0 3.4-2.8 6.2-6.2 6.2"
+      stroke="url(#ob-gold)"
+      stroke-width="2"
+      stroke-linecap="round"
+      fill="none"
+    />
+    <path
+      d="M44 17.5l1.2 2.4 2.6.4-1.9 1.8.45 2.6-2.3-1.2-2.3 1.2.45-2.6-1.9-1.8 2.6-.4z"
+      fill="url(#ob-gold)"
+      opacity="0.95"
+    />
+  </g>
+</svg>

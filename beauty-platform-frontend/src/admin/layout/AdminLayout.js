@@ -1,31 +1,48 @@
+import { useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import AdminTopbar from "./AdminTopbar";
 import "./AdminLayout.css";
 
-function AdminLayout({children}){
+export default function AdminLayout({ children }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { pathname } = useLocation();
 
-return(
+  const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+  const toggleSidebar = useCallback(() => setSidebarOpen((o) => !o), []);
 
-<div className="admin-layout">
+  useEffect(() => {
+    closeSidebar();
+  }, [pathname, closeSidebar]);
 
-<AdminSidebar/>
+  useEffect(() => {
+    if (!sidebarOpen) return undefined;
+    const onKey = (e) => {
+      if (e.key === "Escape") closeSidebar();
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [sidebarOpen, closeSidebar]);
 
-<div className="admin-main">
+  return (
+    <div className="admin-layout">
+      <button
+        type="button"
+        className={`admin-sidebar-backdrop${sidebarOpen ? " visible" : ""}`}
+        aria-label="Close menu"
+        onClick={closeSidebar}
+      />
 
-<AdminTopbar/>
+      <AdminSidebar open={sidebarOpen} onNavigate={closeSidebar} />
 
-<div className="admin-content">
-
-{children}
-
-</div>
-
-</div>
-
-</div>
-
-)
-
+      <div className="admin-main">
+        <AdminTopbar onMenuToggle={toggleSidebar} menuOpen={sidebarOpen} />
+        <div className="admin-content">{children}</div>
+      </div>
+    </div>
+  );
 }
-
-export default AdminLayout

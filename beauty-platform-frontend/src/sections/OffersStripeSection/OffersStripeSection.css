@@ -1,0 +1,231 @@
+/* Service offers — horizontal stripe carousel */
+
+.ofs-sec {
+  padding: 2rem 0 2.5rem;
+  background: var(--white);
+}
+
+.ofs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.15rem;
+}
+
+.ofs-title {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0 0 4px;
+}
+
+.ofs-title em {
+  color: var(--r);
+  font-style: italic;
+  font-weight: 300;
+}
+
+.ofs-sub {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.ofs-dots {
+  display: flex;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.ofs-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(192, 57, 90, 0.25);
+  cursor: pointer;
+  transition: width 0.25s, background 0.25s;
+}
+
+.ofs-dot.active {
+  width: 20px;
+  border-radius: 100px;
+  background: var(--r);
+}
+
+.ofs-carousel {
+  position: relative;
+}
+
+.ofs-track {
+  display: flex;
+  gap: 0.85rem;
+  overflow-x: auto;
+  padding: 0.35rem 0 0.75rem;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ofs-track::-webkit-scrollbar {
+  display: none;
+}
+
+.ofs-stripe {
+  flex: 0 0 min(92%, 520px);
+  scroll-snap-align: center;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--sans);
+  color: #fff;
+  background: linear-gradient(120deg, #962c46 0%, var(--r) 45%, #d94f73 100%);
+  box-shadow: 0 8px 28px rgba(192, 57, 90, 0.22);
+  transition: transform 0.25s, box-shadow 0.25s;
+  min-height: 88px;
+}
+
+.ofs-stripe--active {
+  box-shadow: 0 12px 36px rgba(192, 57, 90, 0.32);
+  transform: scale(1.01);
+}
+
+.ofs-stripe-img {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+.ofs-stripe-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ofs-stripe-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.ofs-badge {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.ofs-stripe-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ofs-stripe-desc {
+  font-size: 0.72rem;
+  opacity: 0.88;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ofs-stripe-end {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.ofs-discount {
+  font-size: 0.8rem;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.22);
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+}
+
+.ofs-code {
+  font-size: 0.65rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.ofs-cta {
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin-top: 0.15rem;
+}
+
+@media (max-width: 768px) {
+  .ofs-sec {
+    padding: 1.5rem 0 2rem;
+  }
+
+  .ofs-header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 0.85rem;
+  }
+
+  .ofs-dots {
+    align-self: center;
+  }
+
+  .ofs-stripe {
+    flex: 0 0 92%;
+    min-height: 80px;
+    padding: 0.65rem 0.85rem;
+    gap: 0.65rem;
+  }
+
+  .ofs-stripe-img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .ofs-stripe-title {
+    font-size: 0.88rem;
+  }
+
+  .ofs-stripe-end {
+    gap: 0.15rem;
+  }
+
+  .ofs-discount {
+    font-size: 0.72rem;
+  }
+
+  .ofs-code {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .ofs-stripe {
+    flex: 0 0 calc(50% - 0.5rem);
+    max-width: 560px;
+  }
+}
